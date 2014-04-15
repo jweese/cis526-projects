@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+import sys
+import optparse
+from collections import defaultdict
+
+optparser = optparse.OptionParser()
+optparser.add_option("-t", "--train", dest="train", default="../data/train/", help="Data filename prefix (default=data)")
+optparser.add_option("-s", "--suffix", dest="suffix", default="_train", help="Data filename suffix (default=_train")
+optparser.add_option("-i", "--input", dest="input", default="../data/dev/dev_set", help="Name of input file (default=data/dev/dev_set")
+
+(opts, _) = optparser.parse_args()
+
+lang = ['eng', 'fra', 'deu', 'ita', 'spa']
+suffix = optparser.suffix
+train_dir = optparser.train
+input_file = optparser.input
+
+# Train data
+dicts = []
+
+for i in xrange(len(lang)):
+  total = 0
+  temp = defaultdict(float)
+  for line in open(train_dir + lang[i] + suffix):
+    words = line.strip().split()
+    for word in words:      
+      temp[word] += 1
+    total += len(words)
+  for key in temp:
+    temp[key] /= (float) total
+  dicts.append(temp)
+
+# Classify language
+for line in open(input_file):
+  words = line.strip().split()
+  samples = []
+  for d in dicts:
+    sample = 0
+    for word in words:
+       sample += d[word]
+    samples.append(sample)
+  max_index = samples.index(max(samples))
+  print lang[max_index]

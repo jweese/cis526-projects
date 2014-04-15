@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+import sys
+import random
+import optparse
+from collections import namedtuple
+
+optparser = optparse.OptionParser()
+
+optparser.add_option("-tr", "--train", dest="train", default="../../data/train/", help="Data filename prefix (default=data)")
+optparser.add_option("-d", "--dev", dest="dev", default="../../data/dev/", help="Path to dev directory" )
+optparser.add_option("-c", "--corpora", dest="corpora", default="../../data/copora/", help="Path to corpora directory")
+optparser.add_option("-s", "--suffix", dest="suffix", default="_wikipedia_2010_100K-sentences.txt", help="Data filename suffix (default=_train)")
+optparser.add_option("-t", "--test", dest="test", default="../../data/test/", help="Path to test directory")
+optparser.add_option("-sl", "--solution", dest="solution", default="../../data/solution/")
+optparser.add_option("-n", "--trainmax", dest="trainmax", default=1000, type="int", help="Number of sentences to extract for training")
+optparser.add_option("-m", "--devmax", dest="devmax", default=3000, type="int", help="Number of sentences to extract for dev and test set")
+optparser.add_option("-ln", "--minlength", dest="minlength", default=20, type="int", help="Minimum string length for dev/test set")
+optparser.add_option("-lm", "--length", dest="length", default=50, type="int", help="Maximum string length for dev/test set")
+
+(opts, _) = optparser.parse_args()
+
+lang = ['eng', 'deu', 'ita', 'spa', 'fra']
+
+suffix = opts.suffix
+corpora = opts.corpora
+test = opts.test
+dev = opts.dev
+train = opts.train
+solution = opts.solution
+
+TRAIN_BOUND = opts.trainmax
+DEV_BOUND = TRAIN_BOUND + int(opts.devmax * 1.5)
+MIN_LENGTH = opts.minlength
+MAX_LENGTH = opts.maxlength
+
+random.seed()
+
+test_output = open(test + 'test', 'w')
+dev_output = open(dev + 'dev', 'w')
+
+test_files = [test_output, dev_output]
+
+for i in xrange(len(lang)):
+  input_file = open(corpora + lang[i] + suffix)
+  output_file = open(train + lang[i] + '_train', 'w')
+  for line in input_file:
+    (j, sentence) = line.strip().split('\t')
+    if (int(j) <= TRAIN_BOUND):
+      # Extracting training set
+      output_file.write(sentence + '\n')
+    elif (int(j) <= DEV_BOUND):
+      if not output_file.closed:
+        output_file.close()
+      else: 
+        # Extracting dev and test data
+        start_bound = random.randint(0, len(sentence))
+        end_bound = start_bound + random.randint(MIN_LENGTH, MAX_LENGTH)
+        f = random.choice(test_files)
+        f.write(lang[i] + '\t' + str(sentence[start_bound:end_bound]) + '\n')
+
+test_output.close()
+dev_output.close()
+
+# Sanitize dev and test data to remove samples
+# that are too short
+test_output = open(test + 'test')
+clean_test_output = open(test + 'clean_test', 'w')
+
+Sample = namedtuple('Sample', 'language sentence')
+test_data = []
+for line in test_output:  
+  if len(line) >= 20:
+    (language, sentence) = line.strip().split('\t')
+    sample = Sample(language, sentence)
+    test_data.append(sample)
+    clean_test_output.write(language + '\t' + sentence + '\n')
+
+dev_output = open(dev + 'dev')
+clean_dev_output = open(dev + 'clean_dev', 'w')
+
+dev_data = []
+for line in dev_output:  
+  if len(line) >= 20:
+    # sys.stderr.write(line)
+    (language, sentence) = line.strip().split('\t')
+    sample = Sample(language, sentence)
+    dev_data.append(sample)
+    clean_dev_output.write(language + '\t' + sentence + '\n')
+
+# Create dataset for dev, testing, and their respective solutions
+test_set = open(test + 'test_set', 'w')
+test_solution = open(solution + 'test_solution', 'w')
+dev_set = open(dev + 'dev_set', 'w')
+dev_solution = open(solution + 'dev_solution', 'w')
+
+for i in xrange(0, opts.devmax):
+  test_sample = random.choice(test_data)
+  dev_sample = random.choice(dev_data)
+  test_set.write(test_sample.sentence + '\n')
+  test_solution.write(test_sample.language + '\n')
+  dev_set.write(dev_sample.sentence + '\n')
+  dev_solution.write(dev_sample.language + '\n')

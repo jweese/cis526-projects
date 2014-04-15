@@ -1,4 +1,4 @@
-The project has a default and baseline system for producing a set of parallel sentences in english and spanish given english and spanish articles on the same topics.
+The project has a default and baseline system for producing a set of parallel sentences in english and spanish given english and spanish Wikipedia articles on the same topics.
 
 To run the default, do:
 python default_pair.py > output

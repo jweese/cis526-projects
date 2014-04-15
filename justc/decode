@@ -1,0 +1,170 @@
+#!/usr/bin/env python
+
+import optparse
+import sys
+import models
+from collections import namedtuple
+import math
+from marisa_trie import RecordTrie
+import re
+
+optparser = optparse.OptionParser()
+optparser.add_option("-i", "--input", dest="input", default="data/europarl.es.100", help="File containing sentences to translate (default=data/input)")
+optparser.add_option("-t", "--translation-model", dest="tm", default="data/europarl.en.100.tm", help="File containing translation model (default=data/tm)")
+optparser.add_option("-l", "--language-model", dest="lm", default="data/europarl.en.100.lm", help="File containing ARPA-format language model (default=data/lm)")
+optparser.add_option("-n", "--num_sentences", dest="num_sents", default=sys.maxint, type="int", help="Number of sentences to decode (default=no limit)")
+optparser.add_option("-k", "--translations-per-phrase", dest="k", default=100, type="int", help="Limit on number of translations to consider per phrase (default=100)")
+optparser.add_option("-s", "--stack-size", dest="s", default=100, type="int", help="Maximum stack size (default=100)")
+optparser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False,  help="Verbose mode (default=off)")
+optparser.add_option("-a", "--threshold", dest="alpha", default=200, type="int", help="threshold for pruning (default=200)")
+optparser.add_option("-r", "--rules", dest="rules", default="data/rules.syntax", help="threshold for pruning (default=200)")
+optparser.add_option("-d", "--decoder", dest="dd", default=2, type="int", help="which decoder to run (default=2)")
+
+opts = optparser.parse_args()[0]
+
+lm = models.LM(opts.lm)
+spanish = [tuple(line.strip().split()) for line in open(opts.input).readlines()[:opts.num_sents]]
+# RecordTrie
+rules = models.SCFG(opts.rules)
+rule = namedtuple("rule", "pos, es, en, ef_phrase, fe_phrase, ef_lex, fe_lex, rarity, phrase_penalty")
+chart_entry = namedtuple("chart_entry", "pos, en, ef_phrase, fe_phrase")
+# single word terminals only
+def default_decode():
+  sys.stderr.write("Decoding %s...\n" % (opts.input,))
+  for i,sentence in enumerate(spanish):
+    if i >= opts.num_sents:
+      return
+    if ' '.join(sentence).decode("utf-8", "replace") in rules:
+      r = rule(*rules[' '.join(sentence).decode("utf-8", "replace")][0])
+      print r.en
+    else:
+      en = []
+      chart = [[{} for _ in xrange(len(sentence))] for _ in xrange(len(sentence))]
+      # single words
+      for i in range(len(sentence)):
+        es_word = sentence[i].decode("utf-8", "replace")
+        if es_word in rules:
+          this_rule = rule(*rules[es_word][0])
+          chart[i][1][this_rule.pos] = this_rule.en.strip('\0')
+          en.append(this_rule.en.strip('\0'))
+      print ' '.join(en)
+
+def baseline_decode():
+  sys.stderr.write("Decoding %s...\n" % (opts.input,))
+  for i,sentence in enumerate(spanish):
+    if i >= opts.num_sents:
+      return
+    if ' '.join(sentence).decode("utf-8", "replace") in rules:
+      r = rule(*rules[' '.join(sentence).decode("utf-8", "replace")][0])
+      print r.en
+    else:
+      nonterms = {}
+      chart = [[{} for _ in xrange(len(sentence)+1)] for _ in xrange(len(sentence))]
+      # terminals
+      for i,j in [(a,b) for a in xrange(len(sentence)) for b in xrange(a+1,len(sentence)+1)]:
+        es_phrase = ' '.join(sentence[i:j]).decode("utf-8", "replace")
+        if es_phrase in rules:
+          this_rule = rule(*rules[es_phrase][0])
+          pos = this_rule.pos.strip('\0')[1:-1]
+          this_chart_entry = chart_entry(this_rule.pos, this_rule.en, this_rule.ef_phrase, this_rule.fe_phrase)
+          if pos in chart[i][j]:
+            chart[i][j][pos].append(this_chart_entry)
+          else:
+            chart[i][j][pos] = [this_chart_entry]
+          if pos in nonterms:
+            nonterms[pos].append((i,j,))
+          else:
+            nonterms[pos] = [(i,j,)]
+      # nonterminals
+      for l in xrange(2, len(sentence)):
+        for i in xrange(0, len(sentence) - l + 1):
+          j = i + l
+          for k in xrange(i+1, j+1):
+            # k is the endpoint of the first nonterminal
+            for nonterm in chart[i][k].values()[:2]:
+              # sort by probability
+              pos_left = nonterm[0].pos.strip('\0')[:-1]
+              trans = [nonterm[0].en.strip('\0')]
+              for pre in xrange(i):
+                search_pre = ' '.join(sentence[pre:i]) + ' ' + pos_left
+                for r in rules.keys(search_pre.decode('utf-8','replace')):
+                  this_rule = rule(*rules[r][0])
+                  rulestring = this_rule.es.strip('\0')
+                  if rulestring:
+                    # need to check if the second partition is in this rule
+                    # then do string substitution
+                    tokens = re.split(r'\[.*?\]', rulestring)
+                    x = re.findall(r'\[([^]]*)\]', rulestring)
+                    nonterm_symbols = map(lambda x : tuple(x.split(',')), x)
+                    def find_substring(seq, subseq):
+                      if not subseq:
+                        return (0,0)
+                      for i in xrange(len(seq)):
+                        if i + len(subseq) >= len(seq):
+                          return None, None
+                        if seq[i] == subseq[0]:
+                          start = i
+                          for j, y in enumerate(subseq):
+                            if y != seq[i+j]:
+                              break
+                            finish = i+j+1
+                            if finish - start == len(subseq):
+                              return (start, finish,)
+                    nsymbols = len(nonterm_symbols)
+                    if nsymbols == 2:
+                      # match second nonterminal if there is one
+                      middle_words = tokens[1].strip().split()
+                      if middle_words:
+                        # has words in between nonterminals
+                        i_mid, j_mid = find_substring(sentence[k:], middle_words)
+                        if i_mid:
+                          # this is the matched part of the sentence
+                          #print sentence[i_mid:j_mid] == tuple(middle_words)
+                          # find second nonterminal
+                          for nterm_j in xrange(k+j_mid+1,j+1):
+                            # print nonterm_symbols[1] <- (pos, position)
+                            if nonterm_symbols[1][0] in chart[k+j_mid][nterm_j]:
+                              # match the rest of the rule
+                              s, t = find_substring(sentence[nterm_j:], tokens[2].strip().split())
+                              if s != None:
+                                start = pre
+                                end = nterm_j
+                                # generate english
+                                en_toks = map(lambda x: x.strip(), re.split(r'\[.*?\]', this_rule.en.strip('\0')))
+                                en_nts = map(lambda x: tuple(x.split(',')), re.findall(r'\[([^]]*)\]', this_rule.en.strip('\0')))
+                                trans.append(chart[k+j_mid][nterm_j][nonterm_symbols[1][0]][0].en.strip('\0'))
+                                if en_toks[0]:
+                                  this_chart_en = ' '.join([en_toks[0], trans[int(en_nts[0][1])-1], en_toks[1], trans[int(en_nts[1][1])-1], en_toks[2]])
+                                else:
+                                  this_chart_en = ' '.join([trans[int(en_nts[0][1])-1], en_toks[1], trans[int(en_nts[1][1])-1], en_toks[2]])
+                                if this_rule.pos.strip('\0') in chart[start][end]:
+                                  chart[start][end][this_rule.pos.strip('\0')].append(chart_entry(this_rule.pos.strip('\0'), this_chart_en, this_rule.ef_phrase, this_rule.fe_phrase))
+                                else:
+                                  chart[start][end][this_rule.pos.strip('\0')] = [chart_entry(this_rule.pos.strip('\0'), this_chart_en, this_rule.ef_phrase, this_rule.fe_phrase)]
+                    else:
+                      # no other terminals
+                      s, t = find_substring(sentence, tokens[1].strip().split())
+                      if s != None:
+                        start = pre
+                        end = t
+                        # generate english
+                        en_toks = map(lambda x: x.strip(), re.split(r'\[.*?\]', this_rule.en.strip('\0')))
+                        en_nts = map(lambda x: tuple(x.split(',')), re.findall(r'\[([^]]*)\]', this_rule.en.strip('\0')))
+                        this_chart_en = ' '.join([en_toks[0], trans[0], en_toks[1]])
+                        if this_rule.pos.strip('\0') in chart[start][end]:
+                          chart[start][end][this_rule.pos.strip('\0')].append(chart_entry(this_rule.pos.strip('\0'), this_chart_en, this_rule.ef_phrase, this_rule.fe_phrase))
+                        else:
+                          chart[start][end][this_rule.pos.strip('\0')] = [chart_entry(this_rule.pos.strip('\0'), this_chart_en, this_rule.ef_phrase, this_rule.fe_phrase)]
+      # generate translated sentence
+      if chart[0][len(sentence)]:
+        print chart[0][len(sentence)].items()[0][1][0].en.strip('\0')
+      else:
+        en = []
+        for i in range(0,len(sentence)-2,2):
+          if chart[i][i+2]:
+            en.append(chart[i][i+2].items()[0][1][0].en.strip('\0'))
+        print ' '.join(en)
+if opts.dd == 2:
+  baseline_decode()
+else:
+  default_decode()

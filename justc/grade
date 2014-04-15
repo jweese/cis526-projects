@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+import optparse
+import sys
+
+optparser = optparse.OptionParser()
+optparser.add_option("-r", "--reference", dest="ref", default="data/europarl.en.100", help="")
+optparser.add_option("-n", "--num_sentences", dest="num_sents", default=sys.maxint, type="int", help="Number of sentences to decode (default=no limit)")
+
+opts = optparser.parse_args()[0]
+
+def levenshtein(seq1, seq2):
+    prev = None
+    curr = range(1, len(seq2) + 1) + [0]
+    for x in xrange(len(seq1)):
+        prev, curr = curr, [0] * len(seq2) + [x + 1]
+        for y in xrange(len(seq2)):
+            delcost = prev[y] + 1
+            addcost = curr[y - 1] + 1
+            subcost = prev[y - 1] + (seq1[x] != seq2[y])
+            curr[y] = min(delcost, addcost, subcost)
+    return curr[len(seq2) - 1]
+
+total = 0.0
+num_sentences = 0.0
+for (sen, ref) in zip(sys.stdin, open(opts.ref)):
+    total += 1.0 * levenshtein(sen.strip().split(), ref.strip().split()) / len(ref)
+    num_sentences += 1.0
+print total / num_sentences

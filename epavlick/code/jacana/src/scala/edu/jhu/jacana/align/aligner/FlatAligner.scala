@@ -7,10 +7,6 @@ import edu.jhu.jacana.align.reader.MsrReader
 import edu.jhu.jacana.align.feature.AlignFeature
 import edu.jhu.jacana.align.feature.PositionAlignFeature
 import edu.jhu.jacana.align.feature.StringSimilarityAlignFeature
-import edu.jhu.jacana.align.feature.NewStringSimilarityAlignFeature
-import edu.jhu.jacana.align.feature.DistortionAlignFeature
-import edu.jhu.jacana.align.feature.OracleAlignFeature
-import edu.jhu.jacana.align.feature.WordPairAlignFeature
 import edu.jhu.jacana.align.feature.GIZAReverseAlignFeature
 import edu.jhu.jacana.align.feature.NULLAlignFeature
 import edu.jhu.jacana.align.feature.Model4AlignFeature

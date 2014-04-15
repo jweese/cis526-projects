@@ -4,7 +4,7 @@ As in the slightly egocentric noisy channel model of machine translation, decodi
 
 Getting Started
 
-Under the *project* directory, we have provided you with a simple decoder written in Python (2.7). You can also find the relevant Spanish sentences and rules for decoding in the *data* directory. Run the decoder using this command:
+Under this directory, we have provided you with a simple decoder written in Python (2.7). You can also find the relevant Spanish sentences and rules for decoding in the *data* directory. Run the decoder using this command:
 
 decode > output
 

@@ -80,7 +80,6 @@ for (e_art, f_art) in zip(e_arts, f_arts):
 		#e_art = candidates[" ".join(f_art[i])]
 		for j in range(len(e_art)):
 			sent = set(f_art[i]).intersection(set(e_art[j]))
-			print sent
 			if len(sent) > maxlen:
 				maxlen = len(sent)
 				ind = (i, j)

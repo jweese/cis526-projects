@@ -22,12 +22,9 @@ f_data = "%s/%s" % (opts.train, opts.foreign)
 e_data = "%s/%s" % (opts.train, opts.english)
 
 def helper(lst):
-	if lst[1] == []:
-		print lst
 	ret = map(lambda y: map(lambda x: x.lower(), y), lst)
 	return ret
 bitext = map(helper, [[sentence.strip().split() for sentence in pair] for pair in zip(open(f_data), open(e_data))[:opts.num_sents]])
-print bitext[0]
 
 # Initialize probabilities uniformly
 t_ef = defaultdict(float)

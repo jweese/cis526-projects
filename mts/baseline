@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+import codecs
+import optparse
+import sys
+
+optparser = optparse.OptionParser()
+optparser.add_option("--train-sentences", dest="train_sentences", default="data/train_sentences.utf8", help="Training sentences")
+optparser.add_option("--train-segmentations", dest="train_segmentations", default="data/train_segmentations.txt", help="Training segmentations")
+optparser.add_option("--test-sentences", dest="test_sentences", default="data/test_sentences.utf8", help="Test sentences to be segmented")
+(opts, _) = optparser.parse_args()
+
+def get_segmentations(line):
+  return set(tuple(map(int, segmentation.split("-"))) for segmentation in line.strip().split())
+
+sys.stderr.write("Constructing lexicon... ")
+lexicon = set()
+with codecs.open(opts.train_sentences, "r", encoding="utf-8") as f_train_sentences:
+  with codecs.open(opts.train_segmentations, "r", encoding="utf-8") as f_train_segmentations:
+    for line_sentence, line_segmentation in zip(f_train_sentences, f_train_segmentations):
+      sentence = line_sentence.strip()
+      for i, j in get_segmentations(line_segmentation):
+        lexicon.add(sentence[i:j])
+sys.stderr.write("%d unique words\n" % len(lexicon))
+
+sys.stderr.write("Segmenting sentences using maximum matching algorithm...\n")
+for line in codecs.open(opts.test_sentences, "r", encoding="utf-8"):
+  sentence = line.strip()
+  index = 0
+  while index < len(sentence):
+    word_length = 1
+    while index + word_length + 1 <= len(sentence) and sentence[index : index + word_length + 1] in lexicon:
+      word_length += 1
+    sys.stdout.write("%d-%d " % (index, index + word_length))
+    index += word_length
+  sys.stdout.write("\n")

@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+import codecs
+import optparse
+import sys
+
+optparser = optparse.OptionParser()
+optparser.add_option("--test-sentences", dest="test_sentences", default="data/test_sentences.utf8", help="Test sentences to be segmented")
+optparser.add_option("-l", "--lengths", dest="lengths", default="1,2", help="Comma-separated segmentation lengths")
+(opts, _) = optparser.parse_args()
+
+lengths = sorted(set(map(int, opts.lengths.split(","))))
+sys.stderr.write("Producing all segmentations of length %s\n" % ", ".join(map(str, lengths)))
+for line in codecs.open(opts.test_sentences, "r", encoding="utf-8"):
+  num_characters = len(line.strip())
+  for length in lengths:
+    for i in range(num_characters - length + 1):
+      sys.stdout.write("%d-%d " % (i, i + length))
+  sys.stdout.write("\n")

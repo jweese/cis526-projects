@@ -1,0 +1,95 @@
+#!/usr/bin/env python
+
+# Anshul Sharma (ansharma)
+
+import math
+import optparse
+import sys
+from collections import defaultdict
+
+# Code for runtime options (copied from the default code provided)
+optparser = optparse.OptionParser()
+optparser.add_option("-d", "--data", dest="train", default="../data/de/train", help="Data filename prefix (default=data/de)")
+optparser.add_option("-e", "--english", dest="english", default="orig.enu.snt", help="Suffix of English filename (default=orig.enu.snt)")
+optparser.add_option("-f", "--foreign", dest="foreign", default="orig.deu.snt", help="Suffix of Foreign filename (default=orig.deu.snt)")
+optparser.add_option("-a", "--alignments", dest="align", default="alignment.txt", help="File containing alignments (default=alignment.txt)")
+optparser.add_option("-t", "--test", dest="test", default="pairs.deu.snt", help="File containing sentences to be paired (default=pairs.deu.snt)")
+optparser.add_option("-o", "--outputfile", dest="output", default="output.txt")
+
+(opts, _) = optparser.parse_args()
+f_data = "%s/%s" % (opts.train, opts.foreign)
+e_data = "%s/%s" % (opts.train, opts.english)
+test = "%s/%s" % (opts.train, opts.test)
+
+alignments = {}
+
+for line in open(opts.align):
+	words = line.strip().split()
+	alignments[words[0]] = words[1:]
+
+def cosineSim(vec1, vec2):
+	num = sum([x * y for (x, y) in zip(vec1, vec2)])
+	den = math.sqrt(sum(map(lambda x: math.pow(x, 2.0), vec1))) * math.sqrt(sum(map(lambda x: math.pow(x, 2.0), vec2)))
+	
+	
+	return float(num)/den
+
+def getArticles(filename):
+	features = {}
+	articles = []
+	temp = []
+	pos = 0 
+	for line in open(filename):
+		if line.strip() != "":
+			sent = map(lambda x: x.lower(), line.strip().split())
+			temp += [sent]
+			features[line.strip().lower()] = [len(sent), pos]
+			pos += 1
+		else:
+			articles += [temp]
+			temp = []
+			pos = 0
+
+	return (features, articles)
+
+(e_feat, e_arts) = getArticles(e_data)
+(f_feat, f_arts) = getArticles(f_data)
+
+candidates = {}
+
+for (e_art, f_art) in zip(e_arts, f_arts):
+	for i in range(len(f_art)):
+		temp = {}
+		fsent = " ".join(f_art[i])
+		for j in range(len(e_art)):
+			esent = " ".join(e_art[j])
+			temp[esent] = cosineSim(f_feat[fsent], e_feat[esent])
+		candidates[fsent] = [x for (x, _) in sorted(temp.items(), key=lambda y: y[1])]
+			
+corres = {}
+
+for (e_art, f_art) in zip(e_arts, f_arts):
+	for i in range(len(f_art)):
+		fsent = []
+		maxlen = 0
+		ind = (i, 0)
+		for fword in f_art[i]:
+			if fword in alignments:
+				fsent += alignments[fword]
+		fsent += f_art[i]
+		#e_art = candidates[" ".join(f_art[i])]
+		for j in range(len(e_art)):
+			sent = set(f_art[i]).intersection(set(e_art[j]))
+			print sent
+			if len(sent) > maxlen:
+				maxlen = len(sent)
+				ind = (i, j)
+		corres[" ".join(f_art[ind[0]])] = " ".join(e_art[ind[1]])
+
+fl = open(opts.output, "w")
+
+for line in open(test):
+	fl.write(corres[line.lower().strip()] + "\n")
+	
+			
+				

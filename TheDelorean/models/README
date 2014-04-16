@@ -1,0 +1,32 @@
+hansard models trained on data/hansard/train.*
+emea models trained on data/emea_train/train.*
+
+Translation Models
+
+{hansard, emea}_grammar.gz
+  These are text-based grammar files for the Hansard training data and the EMEA training data.
+
+{hansard, emea}_grammar.packed
+  These are packed grammars; they are encoded in way that makes it much faster for the Joshua decoder to read the grammar rules. This makes it more efficient than the text-based grammars, but harder to work with if you want to alter the entries in the grammar.
+
+The script in $JOSHUA/scripts/support/grammar-packer.pl can be used to convert a text-based grammar into a packed grammar. 
+
+grammar.glue
+  This is a special grammar that is used in decoding. 
+
+********************************
+Language Models
+
+{hansard, emea}_lm.gz
+  These are language models in ARPA format (see http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html for details).
+
+{hansard, emea}_lm.kenlm
+  These are language models in KenLM's compiled format. This format is loaded more quickly, but it is not in human-readable format.
+
+
+The $JOSHUA/bin/build_binary script can be used to convert the ARPA format to KenLM format. 
+
+********************************
+
+
+For more information about these files, see http://joshua-decoder.org/5.0/file-formats.html

@@ -1,0 +1,71 @@
+#!/usr/bin/env python
+import sys
+import optparse
+
+optparser = optparse.OptionParser()
+optparser.add_option("-e", "--english", dest="en", default="data/train.en", help="File containing english sentences (default=data/train.en")
+optparser.add_option("-f", "--french", dest="fr", default="data/train.fr", help="File containing french sentences (default=data/train.fr")
+optparser.add_option("-a", "--alignments", dest="al", default="data/train.al", help="File containing english sentences (default=data/train.al")
+opts = optparser.parse_args()[0]
+
+english = [line.split() for line in open(opts.en).readlines()]
+french = [line.split() for line in open(opts.fr).readlines()]
+align = [line.split() for line in open(opts.al).readlines()]
+
+counts = {}
+
+def total(e):
+    return sum(counts[e][f] for f in counts[e])
+
+def add (eng_word, fr_word):
+    if not eng_word in counts:
+        counts[eng_word] = {}
+        counts[eng_word][fr_word] = 1
+    else:
+        if fr_word in counts[eng_word]:
+            counts[eng_word][fr_word] = counts[eng_word][fr_word] + 1
+        else:
+            counts[eng_word][fr_word] = 1
+
+for i, a in enumerate(align):
+    en = english[i]
+    fr = french[i]
+    al = [map(int, pair.split("-")) for pair in a]
+    for j, en_word in enumerate(en):
+        mapping = []
+        for (f, e) in al:
+            if e == j:
+                mapping.append(f)
+        if 0 < len(mapping) < 5:
+            mapping.sort()
+            fr_word = " ".join (map(lambda x: fr[x], mapping))
+            add (en_word, fr_word)
+    for j, fr_word in enumerate(fr):
+        mapping = []
+        for (f, e) in al:
+            if f == j:
+                mapping.append(e)
+        if 0 < len(mapping) < 5:
+            mapping.sort()
+            en_word = " ".join (map(lambda x: en[x], mapping))
+            add (en_word, fr_word)
+    if i % 2000 == 0:
+        sys.stderr.write(".")
+sys.stderr.write("\n")
+
+probs = []
+for e in counts:
+    s = total(e)
+    for f in counts[e]:
+        probs.append([f, e, float(counts[e][f]) / s])
+
+probs.sort(key = lambda x : x[2])
+probs.sort(key = lambda x : x[1])
+probs.sort(key = lambda x : x[0])
+
+tm = open("data/tm", "w")
+for l in probs:
+    tm.write("%s ||| %s ||| %f\n" % (l[0], l[1], l[2]))
+tm.close()
+
+

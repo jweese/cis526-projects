@@ -1,0 +1,101 @@
+#!/usr/bin/env python
+import math
+import sys
+import optparse
+
+optparser = optparse.OptionParser()
+optparser.add_option("-e", "--english", dest="en", default="data/train.en", help="File containing english sentences (default=data/train.en")
+optparser.add_option("-f", "--french", dest="fr", default="data/train.fr", help="File containing french sentences (default=data/train.fr")
+optparser.add_option("-a", "--alignments", dest="al", default="data/train.al", help="File containing english sentences (default=data/train.al")
+opts = optparser.parse_args()[0]
+
+english = [line.split() for line in open(opts.en).readlines()]
+french = [line.split() for line in open(opts.fr).readlines()]
+align = [line.split() for line in open(opts.al).readlines()]
+
+counts = {}
+
+def add(l, e, f):
+    for (es, ee, fs, fe) in l:
+        ephrase = " ".join (e[es:ee+1])
+        fphrase = " ".join (f[fs:fe+1])
+        if ephrase in counts:
+            if fphrase in counts[ephrase]:
+                counts[ephrase][fphrase] += 1
+            else:
+                counts[ephrase][fphrase] = 1
+        else:
+            counts[ephrase] = {}
+            counts[ephrase][fphrase] = 1
+
+def aligned(n, f, a):
+    if n < 0 or n >= len(f):
+        return True
+    for (f,_) in a:
+        if f == n:
+            return True
+    return False
+
+def extract(f_start, f_end, e_start, e_end, f, a):
+    if f_end - f_start > 3 or e_end - e_start > 3:
+        return []
+    if f_end == 0: 
+        return []
+    for (fi, ei) in a:
+        if f_start <= fi <= f_end:
+            if ei < e_start or ei > e_end:
+                return []
+        if e_start <= ei <= e_end:
+            if fi < f_start or fi > f_end:
+                return []
+    E = []
+    fs = f_start
+    while True:
+        fe = f_end
+        while True:
+            E.append((e_start, e_end, fs, fe))
+            fe += 1
+            if aligned(fe, f, a):
+                break
+        fs -= 1
+        if aligned(fs, f, a):
+            break
+    return E
+
+def pairs(e, f, a):
+    for es in xrange(len(e)):
+        for ee in xrange(es, len(e)):
+            (fs, fe) = (len(f) - 1, 0)
+            for (fi,ei) in a:
+                if es <= ei <= ee:
+                    fs = min(fi, fs)
+                    fe = max(fi, fe)
+            E = extract(fs, fe, es, ee, f, a)
+            add(E, e, f)
+
+def total(e):
+    return sum(counts[e][f] for f in counts[e])
+
+for i, a in enumerate(align):
+    en = english[i]
+    fr = french[i]
+    al = [map(int, pair.split("-")) for pair in a]
+    pairs(en, fr, al)
+    if i % 2000 == 0:
+        sys.stderr.write(".")
+sys.stderr.write("\n")
+
+probs = []
+for e in counts:
+    s = total(e)
+    for f in counts[e]:
+        probs.append([f, e, float(counts[e][f]) / s])
+
+probs.sort(key = lambda x : x[2])
+probs.sort(key = lambda x : x[1])
+probs.sort(key = lambda x : x[0])
+
+tm = open("data/tm", "w")
+for l in probs:
+    tm.write("%s ||| %s ||| %f\n" % (l[0], l[1], l[2]))
+tm.close()

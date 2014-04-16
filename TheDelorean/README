@@ -1,0 +1,15 @@
+Contents of this directory:
+
+In the data directory there are a number of data sets. The Hansard corpus, containing 100,000 sentence pairs, is the out-of-domain data on which an existing MT system might be trained. The specific domain that we are working with is medical text, specifically a parallel corpus from the European Medicines Agency (EMEA) compiled from drug facts. This parallel data set has already been partitioned into a training set of 5000 sentences (data/emea_train), a development or tuning set of 1000 sentences (data/emea_dev), and a test set of 500 sentences (data/emea_test). The last data set, in data/monolingual, is not parallel text; it is provided because many published domain adaptation solutions use monolingual data in some way.
+
+In the models directory there are some pre-trained grammars and language models. See the README in that directory for more information.
+
+The scripts directory contains the default training script, a decoding script, and the grading script. It also has a sample Joshua configuration file.
+There are a few lines in your configuration files that you will most likely want to change at some point. In the example file, scripts/sample.config:
+- Line 36 specifies the translation model
+- Line 65 specified the language model. You can use more than one language model.
+- Line 79 tells Joshua the number of n-best translations to print out.
+- Line 94 describes the output format of the translations. For the grading script to work, the translations shouldn't have any annotations
+- Lines 124-130 give the weights for the TM features. These are set by the tuning stage.
+
+If you run into problems with Joshua, there is a hidden directory that stores the status of each stage of the pipeline. In the run directory, look in .cachepipe for a list of each stage. The ".err" files will give you information about any problems that may have come up.

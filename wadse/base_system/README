@@ -1,0 +1,4 @@
+The base system is the defualt system with the following modifications:
+
+ - replacement of dice score with IBM1 scores described in first paper
+ - implementation of filter by word ratio

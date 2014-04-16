@@ -1,0 +1,170 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+import math
+from collections import namedtuple
+from collections import defaultdict
+
+parser = argparse.ArgumentParser()
+parser.add_argument('dir', help='Directory containing files')
+parser.add_argument('-t', '--type', dest='type', default='train', choices=['train', 'test'], help='Should the features be generated for train or test set?')
+parser.add_argument('-a', '--alignments', dest='alignments', default='_a', help='File containing alignments for each article.')
+parser.add_argument('-b', '--features', dest='features', default='_features', help='File which to write features to.')
+parser.add_argument('-e', '--english', dest='english', default='_e', help='File containing English articles.')
+parser.add_argument('-f', '--foreign', dest='foreign', default='_f', help='File containing Foreign articles.')
+parser.add_argument('-E', '--english_aligned', dest='english_aligned', default='europarl_e', help='File containing aligned English sentences.')
+parser.add_argument('-F', '--foreign_aligned', dest='foreign_aligned', default='europarl_f', help='File containing aligned French sentences.')
+parser.add_argument('-i', '--ibm1', dest='iter', type=int, default=5, help='Number of times to run IBM1.')
+args = parser.parse_args()
+
+# Files with wikipedia entries and hand alignments
+e_file = args.dir + '/' + args.type + args.english
+f_file = args.dir + '/' + args.type + args.foreign
+alignments_file = args.dir + '/' + args.type + args.alignments
+feature_file = args.dir + '/' + args.type + args.features
+
+# Aligned files (europarl)
+ea_file = args.dir + '/' + args.english_aligned
+fa_file = args.dir + '/' + args.foreign_aligned
+
+article = namedtuple('article', 'name, lines')
+pair = namedtuple('pair', 'name, f_lines, e_lines')
+
+def article_data(filename):
+    articles = []
+    art = None
+    newflag = True
+    for line in open(filename):
+        if len(line.strip()) == 0: 
+            newflag = True
+            if art != None: articles.append(art)
+        elif newflag:
+            art = article(line.strip(), [])
+            newflag = False
+        else:
+            art[1].append(line.strip().split())
+    articles.append(art)
+    return articles
+
+def combine_articles(a_f, a_e):
+    pairs = []
+    for f,e in zip(a_f, a_e):
+        pairs.append(pair(e[0], f[1], e[1]))
+    return pairs
+
+def ibm1(lang1, lang2):
+  # set up pairs of sentences
+  sys.stderr.write("Starting IBM1...\n")
+  pairs = [[[None] + [word for word in pair[0].strip().split()], 
+            [word for word in pair[1].strip().split()]]
+           for pair in zip(open(lang2), open(lang1))]
+  ## setting up initial values
+  t = defaultdict(float)
+  total = defaultdict(float)
+  for pair in pairs:
+    for w1 in pair[1]:
+      for w0 in pair[0]:
+        total[w1] += 1
+        t[(w1, w0)] += 1
+  for (w1, w0) in t.keys():
+    t[(w1, w0)] = t[(w1, w0)] / total[w1]
+  ## Loop through iterations
+  for i in range(args.iter):
+    sys.stderr.write("Now doing iteration %i for IBM1...\n" % (i + 1))
+    count = defaultdict(float)
+    total = defaultdict(float)
+    for pair in pairs:
+      for w1 in pair[1]:
+        denom = sum([t[(w1, w0)] for w0 in pair[0]])
+        for w0 in pair[0]:
+          count[(w1, w0)] += t[(w1, w0)] / denom
+          total[w0] += t[(w1, w0)] / denom
+    for (w1, w0) in t.keys(): 
+      t[(w1, w0)] = count[(w1, w0)] / total[w0] 
+  sys.stderr.write("Converting to logprobs...\n")
+  for k in t:
+      t[k] = math.log(t[k])
+  sys.stderr.write("Done IBM1.\n")
+  return t
+
+eft = ibm1(ea_file, fa_file)
+fet = ibm1(fa_file, ea_file)
+min_eft = min(eft.values())
+min_fet = min(fet.values())
+
+# helper function, used in return for ibm_alignments
+def cl(f, le):
+    return math.log((f + 0.000001) / le)
+
+def ibm_alignments(f, e, t, min_t):
+    (max_a_seq, max_u_seq, a_seq, u_seq) = (0.0, 0.0, 0.0, 0.0)
+    count = 0.0
+    ibm_score = 0.0
+    fertility = defaultdict(int)
+    for fi in f:
+        maxs, maxe = (-sys.maxint, None)
+        for ei in e + [None]:
+            if (fi, ei) in t:
+                score = t[(fi, ei)]
+                if score > maxs: (maxs, maxe) = (score, ei)
+        if maxe != None: 
+            # Increment aligned sequence, cut off unaligned sequence
+            a_seq += 1
+            if u_seq > max_u_seq: max_u_seq = u_seq
+            u_seq = 0.0
+            count += 1
+        else:
+            # Increment unaligned sequence, cut off aligned sequence
+            u_seq += 1
+            if a_seq > max_a_seq: max_a_seq = a_seq
+            a_seq = 0.0
+        if maxs == -sys.maxint: maxs = min_t
+        ibm_score += maxs
+        fertility[maxe] += 1
+    if u_seq > max_u_seq: max_u_seq = u_seq
+    if a_seq > max_a_seq: max_a_seq = a_seq
+    # Calculate fertility scores
+    fert1 = sum(x == 1 for x in fertility.values())
+    fert2 = sum(x == 2 for x in fertility.values())
+    fert3plus = sum(x > 2 for x in fertility.values())
+    # return log-likelihood of scores
+    # except for ibm score, normalize by sentence length
+    return (ibm_score, cl(count,len(f)), cl(len(f) - count,len(f)), 
+            cl(max_u_seq, len(f)), cl(max_a_seq, len(f)), 
+            cl(fert1, len(f)), cl(fert2, len(f)), cl(fert3plus, len(f)))
+
+ptr = open(feature_file, 'w')
+sys.stderr.write("Calculating features...")
+
+f_data = article_data(f_file)
+e_data = article_data(e_file)
+# if test data, return blank alignments for all articles
+if args.type == 'train': a_data = open(alignments_file)
+else: a_data = ['' for _ in range(len(f_data))]
+
+# helper function for printing floats
+def rdstr(i):
+    return str(round(i, 6))
+
+for (n, (p, a)) in enumerate(zip(combine_articles(f_data, e_data), a_data)):
+    alignments = a.strip().split(', ')
+    sys.stderr.write(".")
+    for i, f_sent in enumerate(p.f_lines):
+        for j, e_sent in enumerate(p.e_lines):
+            a_string = str(i) + '-' + str(j)
+            aligned = 0
+            if a_string in alignments: aligned = 1
+            # used to filter out words
+            word_ratio = float(max(len(e_sent), len(f_sent))) / min(len(e_sent), len(f_sent))
+            # f->e features
+            iaf = ibm_alignments(f_sent, e_sent, fet, min_fet)
+            # e->f features
+            iae = ibm_alignments(e_sent, f_sent, eft, min_eft)
+            # print article_num, sentence pair, class, word_ratio, and all features
+            ptr.write('\t'.join([str(n), a_string, str(aligned), rdstr(word_ratio)] 
+                                + [rdstr(x) for x in iaf]
+                                + [rdstr(x) for x in iae]) + '\n')
+
+sys.stderr.write("\n")
+ptr.close()

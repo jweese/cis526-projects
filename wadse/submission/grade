@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import sys
+
+size_a, size_s, size_i = (0, 0, 0)
+for (alignment, sysin) in zip(open('alignments'), sys.stdin):
+    alignment = set([x.strip() for x in alignment.split(',')])
+    system = set([x.strip() for x in sysin.split(',')])
+    intersect = alignment & system
+    size_a += len(alignment)
+    size_s += len(system)
+    size_i += len(intersect)
+    
+precision = float(size_i) / size_s
+recall = float(size_i) / size_a
+F1 = 2 * precision * recall / (precision + recall)
+print round(F1, 4)

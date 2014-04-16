@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+import optparse
+import sys
+from collections import defaultdict
+import glob # for file opening
+import json
+import operator
+
+'''
+Default system
+Default: Your output is printed out, one language per line.
+This system just looks at whether a word is in the wiki.language or text.language. 
+If so, add 1. The language with the highest number of points is printed out.
+How to run: default | grade
+'''
+
+optparser = optparse.OptionParser()
+optparser.add_option("-t", "--test", dest="test", default="test.small", help="Test set (default=test.small)")
+(opts, _) = optparser.parse_args()
+
+languages = defaultdict(int)
+
+# Makes a dictionary of all the words for each wiki article
+# Format [{english : ['a', 'the', 'cake']}]
+multidict = defaultdict(list)
+
+for filename in glob.glob('data/*.*'):
+  with open(filename) as f:
+    lang = filename[10:]
+    languages[lang] = 0
+    for line in f:
+      words = line.split()
+      for word in words:
+        if word not in multidict[lang]:
+          multidict[lang].append(word)
+    sys.stderr.write("Put the words in the file " + filename + " in dict\n")
+
+# Counts whether each word appears in each dictionary
+for i, line in enumerate(open("data/test/" + opts.test)):
+  words = []
+  if len(line)>1: # ignore newlines
+    words = line.split()
+    # Checks if each word is in the wiki or text article or not
+    for word in words:
+      for lang in multidict:
+        if word in multidict[lang]:
+          languages[lang] += 1
+    first = str(max(languages.iteritems(), key=operator.itemgetter(1))[0])
+    second = str(max(languages.iteritems(), key=operator.itemgetter(1))[1])
+    if (languages[first] == languages[second]):
+      print 'uncertain'
+    else:
+      print first
+  else:
+    print ""
+  # Resets language dict for next sentence
+  for lang in languages:
+    languages[lang] = 0

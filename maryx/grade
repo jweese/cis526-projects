@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+import optparse
+import sys
+from collections import defaultdict
+
+'''
+Grades your output against answer file.
+Default: Your output is directly piped from default. i.e. default | grade
+Running grade < [filename] works too.
+'''
+
+optparser = optparse.OptionParser()
+optparser.add_option("-k", "--key", dest="key", default="answers.small", help="Answer key (default=answers.small)")
+(opts, _) = optparser.parse_args()
+
+correct_ans = []
+human_ans = []
+confusion = defaultdict(list) # used for confusion 'matrix' generation
+
+for i, line in enumerate(open("data/test/" + opts.key)):
+  lang = ""
+  if len(line)>1:
+    lang = line.split()[0]
+    correct_ans.append(lang)
+  if lang not in confusion and lang != "":
+    confusion[lang] = []
+
+for i, line in enumerate(sys.stdin):
+  if len(line) > 1: # I have random newlines, need to fix
+    human_ans.append(line.split()[0])
+
+if len(correct_ans) != len(human_ans):
+  sys.stderr.write("ERROR: Length of your answers ("+ str(len(human_ans)) + ") is incorrect (Correct = " + str(len(correct_ans)) + "). Maybe you missed or added a newline.\n")
+  sys.exit(1)
+
+# checks if stuff is equal or not
+correct = 0
+total = 0
+for i, lang in enumerate(correct_ans):
+  if lang == human_ans[i]:
+    correct += 1
+  else:
+    confusion[lang].append(human_ans[i])
+  total += 1
+
+print str(correct) + " correct out of " + str(total) + " sentences (" + str(float(correct)/float(total)*100.0) + "%).\n"
+
+# prints confusion matrix in ugly format
+print "Below is the confusion matrix in the format Correct Language -> [Language(s) you mis-identified the correct language as]"
+for lang in sorted(confusion):
+  print lang + " -> " + str(confusion[lang]) #str cast else can't concat str and list

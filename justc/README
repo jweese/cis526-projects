@@ -1,0 +1,27 @@
+Decoding
+
+As in the slightly egocentric noisy channel model of machine translation, decoding is the process of recovering a message transmitted through a noisy channel. This was accomplished in a previous assignment with monotone stack decoding and beam search.
+
+Getting Started
+
+Under this directory, we have provided you with a simple decoder written in Python (2.7). You can also find the relevant Spanish sentences and rules for decoding in the *data* directory. Run the decoder using this command:
+
+decode > output
+
+This loads the rules and input sentences, deduces translations, and outputs them into the output file. To evaluate your output, the command:
+
+grade < output
+
+This calculates the sum of each sentence's word error rate with respect to the reference translations produced by Joshua.
+
+The Challenge
+
+Rather than ignoring the hierarchical structure of language and flattening the sentences, taking into account the syntactic information should theoretically allow for, in the case of Hiero-like rules with syntactic nonterminals, decent performance with a relatively small training corpus. With decoding by parsing, you must construct a deductive proof whose goal is a possible translation. You have been given a default implementation of a rudimentary decoder that uses only terminal rules to decode. Your job is to improve upon this decoder and implement a variant of the CKY parsing algorithm for SCFGs.
+
+- Incorporate features for ranking
+- Play with pruning parameters
+- Add LM integration or hypergraph search [http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.111.135]
+- Use semiring parsing [http://acl.ldc.upenn.edu/J/J99/J99-4004.pdf]
+- Try a different type of grammar [http://www.isi.edu/~chiang/papers/synchtut.pdf]
+- Try a Hiero-style grammar
+- Generate rules with a larger set of data and prune

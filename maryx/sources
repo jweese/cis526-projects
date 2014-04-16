@@ -1,0 +1,89 @@
+Here are the sources used, excluding the randomly found phrases/sentences in the test.big and test.small files.
+I can email these to you with links attached because the link formatting is lost when pasted into a plaintext file.
+
+For the text.language, I went to Project Gutenberg and tried to find a non-poem/play of that language (some languages are missing). For the wiki.language, I went to each language's region/country page, which I assume would have a lot of text (e.g. I took the Swedish page of the "Sweden" article).
+
+For the test data, I used omniglot.com to pick some phrases for the language, and also chose random sentences from Wikipedia for the language. I do not know what most of the sentences say. I purposely chose some long and short phrases, assuming the short ones will be more difficult to identify.
+
+Project Gutenberg:
+
+afrikaans www.gutenberg.org/cache/epub/18203/pg18203.txt
+catalan www.gutenberg.org/cache/epub/26502/pg26502.txt
+esperanto www.gutenberg.org/files/24145/24145-0.txt
+icelandic www.gutenberg.org/files/15178/15178-0.txt
+danish www.gutenberg.org/cache/epub/11139/pg11139.txt
+dutch www.gutenberg.org/cache/epub/11205/pg11205.txt
+bulgarian www.gutenberg.org/files/3433/3433-0.txt
+english www.gutenberg.org/cache/epub/1597/pg1597.txt
+czech www.gutenberg.org/files/34225/34225-0.txt
+finnish www.gutenberg.org/cache/epub/20021/pg20021.txt
+french www.gutenberg.org/cache/epub/4650/pg4650.txt
+german www.gutenberg.org/cache/epub/12108/pg12108.txt
+greek www.gutenberg.org/files/17839/17839-0.txt
+hungarian www.gutenberg.org/files/19433/19433-0.txt
+irish www.gutenberg.org/files/16122/16122-0.txt
+italian www.gutenberg.org/cache/epub/23297/pg23297.txt
+polish www.gutenberg.org/files/27729/27729-0.txt
+portuguese www.gutenberg.org/cache/epub/16384/pg16384.txt
+spanish www.gutenberg.org/cache/epub/16625/pg16625.txt
+swedish www.gutenberg.org/cache/epub/31533/pg31533.txt
+norwegian www.gutenberg.org/files/20550/20550-0.txt
+welsh www.gutenberg.org/cache/epub/14547/pg14547.txt
+
+
+Wikipedia:
+
+Уикипедия
+Poncije Pilat - Wikipedija
+Vilém Pospíšil – Wikipedie
+Heartbleed-bug - Wikipedia, den frie encyklopædi
+Wikipedia, de vrije encyclopedie
+1993 - Vikipeedia, vaba entsüklopeedia
+Yhdysvallat – Wikipedia
+Thomas Samuel Kuhn — Wikipédia
+Wanderbaumelster – Wikipedia
+Μίλαρντ Φίλμορ - Βικιπαίδεια
+Kárpát-medence - Wikipédia
+An Ríocht Aontaithe - Vicipéid
+Motto - Wikipedia
+Žils Romēns — Vikipēdija
+Visata – Vikipedija
+Rosalba Carriera - Wikipedija
+Arthur Range – Wikipedia, wolna encyklopedia
+Doutoramento – Wikipédia, a enciclopédia livre
+România - Wikipedia
+Liptovský Mikuláš (okres) - Wikipédia
+Manila - Wikipedia, la enciclopedia libre
+Historiska kartor över Stockholm – Wikipedia
+Vükiped
+Indonesia - Wikipedia bahasa Indonesia, ensiklopedia bebas
+Malaysia - Wikipedia Bahasa Melayu, ensiklopedia bebas
+Swahili Wikipedia
+zulu IRiphabliki yaseNingizimu Afrika - Wikipedia
+afrikaans Suid-Afrika - Wikipedia
+esperanto Eŭropo - Vikipedio
+icelandic Ísland - Wikipedia, frjálsa alfræðiritið
+Norge - Wikipedia
+Deutschland – Wikipedia
+France — Wikipédia
+czech Česko – Wikipedie
+Danmark - Wikipedia, den frie encyklopædi
+Nederland - Wikipedia
+finnish Suomi – Wikipedia
+green Ελλάδα - Βικιπαίδεια
+hungary Magyarország - Wikipédia
+Éire - Vicipéid
+lithuanian Lietuva – Vikipedija
+Malta - Wikipedija
+Polska – Wikipedia, wolna encyklopedia
+Portugal – Wikipédia, a enciclopédia livre
+romanian Rumän - Vükiped
+slovak Slovensko - Wikipédia
+slovene Slovenija - Wikipedija, prosta enciklopedija
+España - Wikipedia, la enciclopedia libre
+swedish
+Kurd - Wîkîpediya
+turkishTürkiye - Vikipedi
+vietnamese Việt Nam – Wikipedia tiếng Việt
+welsh Cymru - Wicipedia
+russian Россия — Википедия

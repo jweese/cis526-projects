@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+import optparse
+import sys
+
+optparser = optparse.OptionParser()
+optparser.add_option("--reference", dest="reference", default="data_gold/test_segmentations_gold.txt", help="Reference segmentations")
+(opts, _) = optparser.parse_args()
+
+def get_segmentations(line):
+  return set(tuple(map(int, segmentation.split("-"))) for segmentation in line.strip().split())
+
+reference = [get_segmentations(line) for line in open(opts.reference)]
+system = [get_segmentations(line) for line in sys.stdin]
+
+if len(reference) != len(system):
+  sys.stderr.write("Error: There are %d reference sentences, but segmentations for %d sentences were provided.\n" % (len(reference), len(system)))
+  sys.exit(1)
+
+reference_words = 0
+system_words = 0
+correct_words = 0
+
+for r, s in zip(reference, system):
+  reference_words += len(r)
+  system_words += len(s)
+  correct_words += len(r & s)
+
+precision = 1.0 * correct_words / system_words
+recall = 1.0 * correct_words / reference_words
+f_score = (2 * precision * recall) / (precision + recall)
+
+sys.stdout.write("Precision: %f\n" % precision)
+sys.stdout.write("   Recall: %f\n" % recall)
+sys.stdout.write("  F-Score: %f\n" % f_score)

@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('dir', help='Directory containing files')
+parser.add_argument('-e', '--english', dest='english', default='train_e', help='File containing English articles')
+parser.add_argument('-a', '--alignment', dest='alignment', default='train_a', help='File containing hand alignments')
+args = parser.parse_args()
+
+e = args.dir + '/' + args.english
+alignment = args.dir + '/' + args.alignment
+
+# Helper function to extract all names of articles
+def article_names(filename):
+    names = []
+    newflag = True
+    for line in open(filename):
+        if len(line.strip()) == 0: newflag = True
+        elif newflag: 
+            names.append(line.strip())
+            newflag = False
+    return names
+
+names_e = article_names(e)
+
+size_a, size_s, size_i = (0, 0, 0)
+for (i, (alignment, sysin, name)) in enumerate(zip(open(alignment), sys.stdin, names_e)):
+    alignment = set([x.strip() for x in alignment.split(',')])
+    system = set([x.strip() for x in sysin.split(',')])
+    intersect = alignment & system
+    precision = float(len(intersect)) / len(system)
+    recall = float(len(intersect)) / len(alignment)
+    size_a += len(alignment)
+    size_s += len(system)
+    size_i += len(intersect)
+    print 'Article: ' + name
+    print 'precision: ' + str(round(precision, 4)) + '; recall: ' + str(round(recall, 4))
+    
+precision = float(size_i) / size_s
+recall = float(size_i) / size_a
+F1 = 2 * precision * recall / (precision + recall)
+print '\nOVERALL:'
+print 'precision: ' + str(round(precision, 4))
+print 'recall: ' + str(round(recall, 4))
+print 'F1: ' + str(round(F1, 4))

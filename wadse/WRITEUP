@@ -1,0 +1,73 @@
+## Extracting Parallel Sentences from Wikipedia 
+
+Systems in statistical machine translation often benefit from training on more data. However, many languages do not have large parallel corpora available. The goal of this project is to use Wikipedia as a source to extract aligned sentences. Wikipedia provides a large number of documents in many languages, and provides document alignment through the main topic of each page. Additional features, such as links and image captions, are also available to be used in sentence alignment.
+
+Here are two excerpts from Wikipedia articles:
+
+Velabrum (German)
+0) Karte Rom und Velabrum
+1) Arco di Giano e san Giorgio Velabrum
+2) Velabrum war in der Antike der Name der ursprünglich sumpfigen Gegend in Rom , die zwischen dem Westabhang des Palatins und dem Kapitol lag und sich bis zum Tiber erst reckte .
+3) In diesem Sumpf soll Faustulus die ausgesetzten Knaben Romulus und Remus gefunden haben .
+4) Ihr Korb wurde von der Strömung den Tiber entlang getrieben und im Velabrum von den Wurzeln eines Feigenbaumes aufgehalten .
+
+Velabrum (English)
+0) The Velabrum is the low valley in the city of Rome that connects the Forum with the Forum Boarium , and the Capitoline Hill with the western slope of the Palatine Hill .
+1) Before the construction of the Cloaca Maxima , which probably follows the course of an ancient stream , the area was a swamp .
+2) Ancient authorities state that the roots of a fig tree growing in this swamp caught and stopped the basket carrying Romulus and Remus as it floated along on the Tiber current .
+3) The place therefore has a high symbolic significance .
+4) Even after the Cloaca was built , the area was still prone to flooding from the Tiber , until the ground level was raised after the Neronian fire .
+
+A naive implementation would create the alignment (0-0, 1-1, 2-2, 3-3, 4-4) (German-English). However, this is clearly incorrect: lines 0 and 1 in the German excerpt are captions for images, which are missing in the English Wikipedia article. Furthermore, sentence (3) in the English excerpt has no match in the German equivalent, while the essence of English sentence (2) seems to be split between German sentences (3) and (4). A more plausible alignment would be along the lines (2-0, 4-2).
+
+## Getting Started
+
+The data provided with the article is Wikipedia documents which have been formatted to contain a single sentence on each line (as shown in the example above). Furthermore, a file with alignments (hand aligned) is provided for the training data. To get started, put this data in a more useful format by running:
+
+./generate_features bg
+./generate_features de
+./generate_features es
+
+This creates files with the format: [article number] [sentence pair] [binary alignment indicator] [features ...]. You can inspect these files at bg/train_features, de/train_features and es/train_features. From now on we'll just use bg, but you should run these for all languages.
+
+Next, to get weights for the training features, run 
+
+./learn bg
+
+Once again, a file with weights is created - see bg/weights. Note that there are two numbers, since we start with two features: the ratio of the longer sentence to the shorter sentence, and rough alignment score generated using dice's coefficient.
+
+The next step is to create the alignments:
+
+./align bg
+
+This will print alignments of the form "[f index]-[e index]" to stdout, with one line per article. Finally, we want to feed this data to the grader:
+
+./align bg | ./grade bg
+
+Generating alignments for test data follows a similar process with different flags; see the README for more information.
+
+## The Challenge
+
+The goal is to extract as many parallel sentences as possible, while trying to only extract correct parallel sentences. For each foreign sentence, your system should output either NULL (no alignment) or an alignment to a single English sentence. The test metric will be accuracy, as measured by F1 <LINK: http://en.wikipedia.org/wiki/F1_score>. 
+
+Some papers have been written on the topic of extracting parallel sentences from Wikipedia, which should help you to get started:
+
+Smith, Jason R., Chris Quirk, and Kristina Toutanova. "Extracting parallel sentences from comparable corpora using document level alignment." <LINK: http://dl.acm.org/citation.cfm?id=1857999.1858062>
+
+Adafre, Sisay Fissaha, and Maarten De Rijke. "Finding similar sentences across multiple languages in wikipedia." <LINK: http://www.mt-archive.info/EACL-2006-Fissaha-Adafre.pdf>
+
+As discussed in the first paper, class imbalance is a big problem here - many more sentences are unaligned than are aligned. This implementation deals with that issue by essentially implementing a ranking algorithm and introducing null alignments by dropping the worst scores (see the -t flag in the align script).
+
+There are many ways to go about improving the score of the default system:
+ - Use more training data. You have been provided with the first 10,000 Europarl sentences for each langauge pair, but you can get more or look for corpora that more closely represent Wikipedia.
+ - Look into additional features. Dice ratios and word-count ratios are a naive start; implementing IBM1, another word-alignment algorithm, or other features is a relatively simple way to get going.
+ - Implement a different classifier, or find a better way to introduce nulls than dropping the worst scores.
+ - Implement a filter for sentence pairs, as discussed here <LINK: http://acl.ldc.upenn.edu/J/J05/J05-4003.pdf>
+
+There is a lot of room for improvement here, as can be seen by the accuracy scores. Be creative - there are many ways to go about tackling this problem.
+
+## Ground Rules
+
+Feel free to feel any additional resources you think are necessary, unless they are specifically designed to align parallel corpora.
+
+For submission, create a file called 'assignment5.txt' with alignments for the test data in each directory. Note that this should be a single file with alignments for all three languages; the order is alphabetical (bg, de, es). See the README for more information and a simple way to generate such a file.

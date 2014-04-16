@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+from collections import defaultdict
+
+parser = argparse.ArgumentParser()
+parser.add_argument('dir', help='Directory containing files')
+parser.add_argument('-w', '--weights', dest='weights', default='weights', help='File containing weights of different features.')
+parser.add_argument('-b', '--features', dest='features', default='train_features', help='File which to read features from.')
+parser.add_argument('-t', '--threshold', dest='threshold', type=float, default=0.2, help='Threshold: fraction of results to withold. (default: 0.2)')
+args = parser.parse_args()
+
+w_file = args.dir + '/' + args.weights
+feature_file = args.dir + '/' + args.features
+
+w = [float(line.strip()) for line in open(w_file)]
+a = defaultdict(lambda: defaultdict(lambda: [-sys.maxint, -1]))
+
+artnum = 0
+article = None
+for line in open(feature_file):
+    x = line.strip().split('\t')
+    art = int(x[0])
+    alignment = x[1]
+    # cut off ratios greater than 2
+    # also done in learn script
+    ratio = float(x[3])
+    if ratio > 2: continue
+    f, e = [int(sent) for sent in alignment.split('-')]
+    features = [float(xi) for xi in x[3:]]
+    score = sum(wi * fi for wi, fi in zip(w, features))
+    # Only keep the highest scores
+    if score > a[art][f][0]: a[art][f] = [score, e]
+
+# generate threshold (score) value for inclusion in output
+scores = []
+for art in sorted(a.keys()):
+    for f in a[art]:
+        scores.append(a[art][f][0])
+thresh_idx = int(round(args.threshold * len(scores), 0))
+threshold = sorted(scores)[thresh_idx]
+
+# write out any alignments with scores greater than threshold
+for art in sorted(a.keys()):
+    alignments = []
+    for f in a[art]:
+        if a[art][f][0] >= threshold:
+            alignments.append(str(f) + '-' + str(a[art][f][1]))
+    sys.stdout.write(', '.join(alignments) + '\n')

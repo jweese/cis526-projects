@@ -1,0 +1,11 @@
+This directory contains two files:
+
+ - alignments: the true alignments for the test data.
+   These are in alphabetical order (bg, de, es)
+
+ - grade: takes in submission through stdin and calculates
+   the displays the F1 score for the submission. Once again,
+   the submission must be in the order bg, de, es.
+
+Usage: (assuming submission is in assignment5.txt)
+cat assignment5.txt | ./grade

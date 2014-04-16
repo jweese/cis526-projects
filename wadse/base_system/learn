@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+import math
+from collections import namedtuple
+from collections import defaultdict
+
+parser = argparse.ArgumentParser()
+parser.add_argument('dir', help='Directory containing files')
+parser.add_argument('-b', '--features', dest='features', default='train_features', help='File containing features.')
+parser.add_argument('-w', '--weights', dest='weights', default='weights', help='File to save weights in.')
+args = parser.parse_args()
+
+w_file = args.dir + '/' + args.weights
+feature_file = args.dir + '/' + args.features
+
+aligned = {}
+unaligned = defaultdict(lambda:[])
+
+for line in open(feature_file):
+    x = line.strip().split('\t')
+    art = int(x[0])
+    alignment = x[1]
+    c = int(x[2])
+    # cut off ratios greater than 2
+    # also done in align script
+    ratio = float(x[3])
+    if ratio > 2: continue
+    f, e = [int(sent) for sent in alignment.split('-')]
+    features = tuple([float(xi) for xi in x[3:]])
+    if c == 1: aligned[(art, f)] = features
+    else: unaligned[(art, f)].append(features)
+
+w = [0.0 for _ in aligned[aligned.keys()[0]]]
+epochs = 500
+eta = 0.001
+
+# SVM similar to implementation in Assignment 4
+# Here, a PRO-like approach is used to reduce
+# class imbalance in the training data
+for i in xrange(epochs):
+    sys.stderr.write('.')
+    errors = 0.0
+    observations = 0.0
+    for k in aligned.keys():
+        a_feat = aligned[k]
+        for u_feat in unaligned[k]:
+            x = [ai-ui for ai,ui in zip(a_feat, u_feat)]
+            if sum([xi*wi for xi,wi in zip(x,w)]) <= 0:
+                errors += 1
+                w = [(eta*xi)+wi for xi,wi in zip(x,w)]
+            observations += 1
+    # Since there are so many epochs, this is commented out 
+    # sys.stderr.write ('Epoch ' + str(i) + ' error: ' +  str(errors/observations) + '\n')
+sys.stderr.write('\n')
+
+ptr = open(w_file, 'w')
+for wi in w:
+    sys.stderr.write(str(wi) + '\n')
+    ptr.write(str(wi) + '\n')
+ptr.close()
+
+        

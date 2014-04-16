@@ -1,0 +1,51 @@
+To load this code, add /home/hltcoe/mpost/expts/grammar13/code to your PYTHONPATH environment
+variable. You can then simply type 'import dataset'.
+
+To create the DataSet object, point it at the directory you care about:
+
+    from dataset import *
+    d = DataSet('/export/projects/grammar13/nucle')
+
+An optional second argument will limit the number of records returned (for debugging).
+
+You can then iterate over the sentences in the dataset, and do a number of things with the sentences
+(represented as Sentence objects):
+
+  for sentence in d:
+    # Print the parse tree (if one was found in the dataset dir)
+    print s.getParse()
+
+    # Print the POS tags
+    print s.pos()
+
+    # Print the sentence itself
+    print s
+
+    # Iterate over all spans of the sentence
+    for span in s.spans():
+      print span
+
+The span iterators for the sentence provide a lot of flexibility and should be easily
+extendable. See the examples in dataset/Sentence.py, where a number of iterators (as generators)
+have been provided. For example, here's how to get all the spans of width at most 3:
+
+    for span in s.spans(max = 3):
+      i,j = span
+      print i, '-', j
+
+You can also do interesting things with the parse trees, like use them to limit which spans you see:
+
+    def constituent_spans(sentence):
+        if sentence.getParse() is not None:
+            for span in sentence.spans():
+                constituent = sentence.getParse().hasSpan(span[0], span[1], label)
+                if constituent is not None:
+                    yield (span,constituent)
+
+You could also see all the constituents starting at a given index. This code looks at all spans of
+length one (word spans) and all NPs following it:
+
+    for span in sentence.spans(min = 1, max = 1):
+      i,j = span
+      for constituent in sentence.getParse().spansStartingAt(j, 'NP'):
+        print "POS %d CONSTITUENT %s" % (j, constituent)

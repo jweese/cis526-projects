@@ -1,0 +1,35 @@
+code		description 		example (original/correction)
+
+*ArtOrDet     Article or Determiner	This caused problem like the appearance of slums which most of the time is not safe due to [the/their] unhealthy environment .	
+*Nn           Noun number		This will , if not already , caused problems as there are very limited [spaces/space] for us .
+*Prep	      Preposition		A good example is Japan where there are a lot of tall condominiums despite the large number of earthquakes happening [in/--] there . 
+*SVA          Subject-verb-agreement	This will , if not already , caused problems as there [are/is] very limited space for us .
+*Vform        Verb form			This will , if not already , [caused/cause] problems as there is very limited space for us .
+*Mec          Punctuation, capitalization, spelling, typos	A good example is Japan[--/,] where there are a lot of tall condominiums despite the large number of earthquakes happening in there .
+
+Npos         Noun possesive	[China/China's] industry is mostly at the lower end of the world production chain , which means the production in China is energy- consuming , labour-intensive , but not so profitable . 
+Pform        Pronoun form	To guide [them/themselves] in this heavy responsibility of saving the earth , they use a set of simple steps which guide them in engineering a remedy , known as the Engineering Design Process .
+Pref         Pronoun reference		Since fuels are non renewable and emit so much harmful gases , the alternatives that we are looking for should be a renewable [one/energy source] and not emit harmful pollutants . 
+Rloc         Local redundancy	Not only parents and teachers but also whole society pushes students [concentrating on how/--] to get outstanding marks in examinations .
+Sfrag        Fragment	Another example is Netherlands , whose most of his lands is a swamp under sea [level ,/level. It] have used a good irrigation system to counter their problem and to make their land habitable . 
+Smod         Dangling modifier	In some cases , employers have the notion that [employing the aged/in order to employ the aged] , the setting of the workplace might have to undergo some changes to accommodate to the needs of the elderly . 
+Spar         Parallelism	The cost of raw materials has risen significantly from the year 2003 to [year/the year] 2009 and it has affected the electronics supply chain . 
+Srun         Runons, comma splice	When machinery failure occurs and reactor temperature increase to extremely high levels , the reactor does not undergo a meltdown or explode [,/;] instead temperature just stays at the high level until the heat can be dissipated or cooled by coolant liquids .
+Ssub         Subordinate clause	In addition , burning of fuels emit various harmful gases [pollute/which pollute] our fragile environment . 
+Trans        Link word/phrases		Dubai will be a good example for this as previously the country got almost no natural water [and/but] they use irrigation to bring natural water to the country . 
+V0           Missing verb	The solution can be obtain by using technology to achieve a better usage of space that we have and resolve the problems in lands that [--/are] inhospitable such as desserts and swamps .
+Vm           Verb modal		In the last step of design , political issues [also/can also] disturb the process significantly .
+Vt           Verb tense		This [caused/has caused] problem like the appearance of slums which most of the time is not safe due to the unhealthy environment .
+Wa           Acronyms	Hence , driven by social concern , President Reagan of [the US/The United States] agreed to partially open the GPS for public use .
+Wform        Word form	Besides some [technologically/technological] determinists that allow the development of biometric identification , this technology is also shaped by three social factors , namely , the desire of the society for safety , convenience and economy . 
+WOadv        Adverb/adjective position	Moreover , the government [has also/also has] other financial plans in spending their resources . 
+WOinc        Incorrect sentence form	Obviously , the discovery of magnetic monopole indicated a great progress in [pyhsics field/the field of physics] .
+Wtone        Tone	Although China devotes [a lot of/many] resources into production , the added value for innovation is low . 
+Um           Unclear meaning (cannot be corrected)	For government and other organizations , they are also looking for small size equipments [and time-saving progress] of identification .
+Others       Other errors
+
+Cit          Citation		Ignore this one
+
+
+
+

@@ -1,0 +1,33 @@
+To run the CoNLL grading script on the mturk data : 
+
+seas590:esl-data kunpeng$ python code/format_data.py output/
+
+seas590:esl-data kunpeng$ sh m2score.sh output/
+
+To generate output for TER score:
+
+seas590:esl-data kunpeng$ python code/format.py output/
+
+CORRECT EDITS  : 992
+PROPOSED EDITS : 7614
+GOLD EDITS     : 11543
+P = 0.130286314683
+R = 0.0859395304514
+F1 = 0.1035652764
+Precision   : 0.1303
+Recall      : 0.0859
+F1          : 0.1036
+
+The more verbose output of the CoNLL grader is written to output/prediction.log. E.g. for each sentence, output is in the following form: 
+
+SOURCE        : However , the use of RFID can have undesirable effects on our body because radio waves from RFID are mutagenic and it is harmful when exposed in large quantity .
+HYPOTHESIS    : However , the use of RFID can have undesirable effects in our body because radio waves from RFID are mutagenic and it is harmful when exposed in large quantity .
+EDIT SEQ      : [(8, 11, u'undesirable effects on', u'undesirable effects in')]
+GOLD EDITS    : [(21, 23, u'it is', [u'they are']), (28, 29, u'quantity', [u'quantities']), (25, 26, u'exposed', [u'patients are exposed to them'])]
+CORRECT EDITS : []
+# correct     : 0
+# proposed    : 1
+# gold        : 7
+precision     : 0.0
+recall        : 0.0
+f1            : 0.0

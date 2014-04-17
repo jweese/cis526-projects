@@ -1,0 +1,94 @@
+#!/usr/bin/env python
+
+# Implementation of the IBM Model I algorithm for word alignment.
+# Generates a file with alignments on the data
+
+# Anshul Sharma (ansharma)
+
+import optparse
+import sys
+from collections import defaultdict
+
+# Code for runtime options (copied from the default code provided)
+optparser = optparse.OptionParser()
+optparser.add_option("-d", "--data", dest="train", default="../data/de/train", help="Data filename prefix (default=data/de)")
+optparser.add_option("-e", "--english", dest="english", default="eur.en", help="Suffix of English filename (default=eur.en)")
+optparser.add_option("-f", "--foreign", dest="foreign", default="eur.de", help="Suffix of Foreign filename (default=eur.de)")
+optparser.add_option("-t", "--threshold", dest="threshold", default=0.5, type="float", help="Threshold for aligning with Dice's coefficient (default=0.5)")
+optparser.add_option("-n", "--num_sentences", dest="num_sents", default=sys.maxint, type="int", help="Number of sentences to use for training and alignment")
+optparser.add_option("-o", "--outputfile", dest="output", default="alignments.txt")
+(opts, _) = optparser.parse_args()
+f_data = "%s/%s" % (opts.train, opts.foreign)
+e_data = "%s/%s" % (opts.train, opts.english)
+
+def helper(lst):
+	ret = map(lambda y: map(lambda x: x.lower(), y), lst)
+	return ret
+bitext = map(helper, [[sentence.strip().split() for sentence in pair] for pair in zip(open(f_data), open(e_data))[:opts.num_sents]])
+
+# Initialize probabilities uniformly
+t_ef = defaultdict(float)
+ewords = set()
+fwords = set()
+
+for (f, e) in bitext:
+	for eword in e:
+		#eword = eword.lower()
+		ewords.add(eword)
+		for fword in f:
+			#fword = fword.lower()
+			if fword not in fwords:
+				fwords.add(fword)
+			t_ef[(eword, fword)] += 1
+
+for key in t_ef:
+	t_ef[key] = 1.0/t_ef[key] 
+
+
+stotal_e = defaultdict(float)
+
+# Run the EM algorithm for five iterations
+for i in range(5):
+	print "Iteration: " + str(i)
+	count_ef = defaultdict(float) 
+	total_f = defaultdict(float)
+
+	# Expectation step
+	for (num, (f, e)) in enumerate(bitext):
+		
+		# Convert all words to lower case
+		#f = map(lambda x: x.lower(), f)
+		#e = map(lambda x: x.lower(), e)
+		
+		for eword in e:
+			stotal_e[eword] = 0.0
+			for fword in f:
+				stotal_e[eword] += t_ef[(eword, fword)]
+		for eword in e:
+			for fword in f:
+				count_ef[(eword, fword)] += (t_ef[(eword, fword)])/(stotal_e[eword])
+				total_f[fword] += (t_ef[(eword, fword)])/(stotal_e[eword])
+	
+	# Maximization step
+	for (num, fword) in enumerate(fwords):
+		for eword in ewords:
+			t_ef[(eword, fword)] = count_ef[(eword, fword)]/total_f[fword]
+
+print "\n"
+
+# Creates output file named "alignments.txt" with alignments for the entire dataset
+fl = open(opts.output, "w")
+#bitext = map(helper, [[sentence.strip().split() for sentence in pair] for pair in zip(open(f_data), open(e_data))[:sys.maxint]])
+
+for (f, e) in bitext:
+        for (i, f_i) in enumerate(f):
+
+		# Variables to track the maximum probability of alignment
+		mx = 0.0 
+                best = (0, 0)
+	
+                for (j, e_j) in enumerate(e):
+                        if t_ef[(e_j, f_i)] >= mx:
+                                mx = t_ef[(e_j, f_i)]
+                                best = (i, j)
+                fl.write("%s %s\n" % (f[best[0]], e[best[1]]))

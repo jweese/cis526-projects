@@ -1,0 +1,3 @@
+#!/bin/bash
+javac -d bin sourcepath src -cp lib/jama-1.0.3.jar src/cis526/FinalProject.java
+java -cp bin:lib/jama-1.0.3.jar cis526.FinalProject $1 $2

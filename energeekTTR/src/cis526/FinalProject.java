@@ -23,13 +23,13 @@ public class FinalProject {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		FinalProject evaluation = new FinalProject();
-		evaluation.run();
+		evaluation.run(args);
 	}
 
 	/**
 	 * actual main method
 	 */
-	public void run(){
+	public void run(String[] args){
 		long startT = System.currentTimeMillis(); //timer start
 		
 		//when only have raw data, please run the following method
@@ -42,10 +42,6 @@ public class FinalProject {
 //		ArrayList<String> tmpAvr = pruneAvr.prune(51);
 //		WriteFile.writeFile("averageTER_ranking.txt", tmpAvr);
 		
-		//random method write
-//		RandomPrune pruneRand = new RandomPrune();
-//		ArrayList<String> tmpRand = pruneRand.prune(51);
-//		WriteFile.writeFile("random_ranking.txt", tmpRand);
 		
 		//page rank method write
 //		try{
@@ -54,15 +50,32 @@ public class FinalProject {
 //            e.printStackTrace();
 //        }
 		
-		//read turker ranking list from file and prune turker list
-//		ArrayList<String> tmp = ReadFile.rankedTurkerListInput("./output/pageRank_ranking.txt");		
-//		ScoreSys.calcScoreForMinTurks(tmp, true, 2);
+		if (args.length > 0) {
+			if (args[0].equals("rank") && args.length == 2) {
+				if (args[1].equals("random")) {
+					//random method write
+					RandomPrune pruneRand = new RandomPrune();
+					ArrayList<String> tmpRand = pruneRand.prune(51);
+					Iterator<String> iter = tmpRand.iterator();
+					while(iter.hasNext()) {
+						System.out.println(iter.next());
+					}
+					//WriteFile.writeFile("baseline.txt", tmpRand);
+				}
+			}
+			
+			if (args[0].equals("score") && args.length  == 2) {
+				//read turker ranking list from file and prune turker list
+				ArrayList<String> tmp = ReadFile.rankedTurkerListInput(args[1]);		
+				ScoreSys.calcScoreForMinTurks(tmp, true, 2);
+			}
+		}
 	
 		// read turker ranking list from file and get turkers left/average bleu score plot data
 //		ArrayList<String> tmp = ReadFile.rankedTurkerListInput("./output/manually_picked_from_pageRank.txt");	
 //		ScoreSys.loopCalcBestScore(tmp, true);
 
-		System.out.println("Time Elapse (s): " + (System.currentTimeMillis() - startT) / 1000.0); //timer end
+		//System.out.println("Time Elapse (s): " + (System.currentTimeMillis() - startT) / 1000.0); //timer end
 	}
 	
 	/**

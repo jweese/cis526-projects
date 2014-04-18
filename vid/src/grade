@@ -5,9 +5,11 @@ import optparse
 optparser = optparse.OptionParser()
 optparser.add_option("-s", "--solution", dest="solution", default="../data/solution/dev_solution", help="Path to solution set")
 
+(opts, _) = optparser.parse_args()
+
 num_correct = 0
 total = 0
-for l1, l2 in zip(open(solution_set), sys.stdin):
+for l1, l2 in zip(open(opts.solution), sys.stdin):
   total = total + 1
   if l1 == l2:
     num_correct = num_correct + 1

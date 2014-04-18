@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+import argparse
+import sys
+from collections import Counter, defaultdict
+from math import log
+
+def phrase_extraction(A, ename, rname):
+    BP = []
+    for estart in range(len(ename)):
+        for eend in range(estart, len(ename)):
+            # find the minimally matching foreign phrase
+            (rstart, rend) = (len(rname), 0)
+            for (e, r) in A:
+                if estart <= e <= eend:
+                    rstart = min(r, rstart)
+                    rend = max(r, rend)
+            BP.extend(extract(A, rname, ename, rstart, rend, estart, eend))
+            # print('maybe')
+    return BP
+
+def extract(A, rname, ename, rstart, rend, estart, eend):
+    if rend == 0:
+        return []
+    for (e, r) in A:
+        if rstart <= r <= rend and (e < estart or e > eend):
+            return []
+    # add phrase pairs (incl. additional unaligned f)
+    E = []
+    rs = rstart
+    while True:
+        re = rend
+        while True:
+            E.append((ename[estart:eend + 1], rname[rs:re + 1]))
+            re += 1
+            if aligned(A, re) or re >= len(rname):
+                # print('h1')
+                break
+        rs -= 1
+        if aligned(A, rs) or rs < 0:
+            # print('h2')
+            break
+    return E
+
+def aligned(A, f_i):
+    return any([a[0] == f_i for a in A])
+
+def main():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('-n', '--max-length', dest='n', type=int, default=10)
+    parser.add_argument('-t', '--train', dest='t', default='data/train.txt')
+    args = parser.parse_args()
+    train_names = [l.strip().split('\t') for l in open(args.t)]
+    alignments = [[(int(a.split('-')[0]), int(a.split('-')[1])) for a in line.strip().split()] for line in sys.stdin]
+    extracted_phrase_pairs = [phrase_extraction(A, train_names[i][0], train_names[i][1]) for (i, A) in enumerate(alignments)]
+    phrase_pairs = [pair for name in extracted_phrase_pairs for pair in name]
+    distinct_pairs = set(phrase_pairs)
+    count = Counter(phrase_pairs)
+    d = defaultdict(list)
+    for (k, v) in distinct_pairs:
+        d[k].append(v)
+    # print(len(d))
+    # print(count.most_common(10))
+    phi = {pair: log(float(count[pair]) / sum([count[(pair[0], pair_prime)] for pair_prime in d[pair[0]]])) for pair in distinct_pairs}
+    philist = sorted(phi.items(), key=lambda x: (len(x[0][1]), x[0][1]))
+    print('\n'.join(['%s|||%s|||%f' % (r, e, p) for ((e, r), p) in philist if e and r]))
+
+if __name__ == '__main__':
+    main()

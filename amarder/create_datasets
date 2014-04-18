@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+from math import ceil
+import string
+
+names = [l.lower().strip().split('\t') for l in open('data/dataset') if 'death' not in l.lower() and not any([p in l for p in '»'])][1:]
+# names = [l.lower().strip().split('\t') for l in open('data/dataset') if 'death' not in l.lower()][1:]
+names = [(e.split(), r.split()) for (e, r) in names if abs(len(e) - len(r)) < 2]
+for (i, (e, r)) in enumerate(names):
+    if ',' in ''.join(r):
+        if ',' not in ''.join(e):
+            names[i] = (e, r[1:] + r[0:1])
+            # print(names[i])
+    else:
+        if ',' in ''.join(e):
+            names[i] = (e[1:] + e[0:1], r)
+            # print(names[i])
+names = [(' '.join(e).replace(',', ''), ' '.join(r).replace(',', '')) for (e, r) in names]
+with open('data/train.txt', 'w') as train:
+    for (e, r) in names[:ceil(0.80 * len(names))]:
+        train.write('%s\t%s\n' % (e, r))
+with open('data/test.ru', 'w') as test:
+    for (_, r) in names[:len(names) - ceil(0.80 * len(names))]:
+        test.write('%s\n' % (r))
+with open('data/test.en', 'w') as test:
+    for (e, _) in names[:len(names) - ceil(0.80 * len(names))]:
+        test.write('%s\n' % (e))
+print(len(names))

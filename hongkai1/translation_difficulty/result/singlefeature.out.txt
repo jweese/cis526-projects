@@ -1,0 +1,110 @@
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, sentlen
+Pairwise acc: 0.5993; spearman: 0.2948
+=eval, test, sentlen
+Pairwise acc: 0.6189; spearman: 0.3442
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, treedepth
+Pairwise acc: 0.5735; spearman: 0.2298
+=eval, test, treedepth
+Pairwise acc: 0.5887; spearman: 0.2492
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, numpunct
+Pairwise acc: 0.5454; spearman: 0.1735
+=eval, test, numpunct
+Pairwise acc: 0.5758; spearman: 0.1928
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, numwh
+Pairwise acc: 0.4962; spearman: 0.0897
+=eval, test, numwh
+Pairwise acc: 0.5599; spearman: 0.0974
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, lensbar
+Pairwise acc: 0.5328; spearman: 0.1216
+=eval, test, lensbar
+Pairwise acc: 0.5637; spearman: 0.1521
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, avgwordlen
+Pairwise acc: 0.4999; spearman: 0.0017
+=eval, test, avgwordlen
+Pairwise acc: 0.5073; spearman: 0.0227
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, maxlenVP
+Pairwise acc: 0.5841; spearman: 0.2524
+=eval, test, maxlenVP
+Pairwise acc: 0.5954; spearman: 0.2766
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, maxlenNP
+Pairwise acc: 0.5779; spearman: 0.2396
+=eval, test, maxlenNP
+Pairwise acc: 0.6039; spearman: 0.2984
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, maxlenPP
+Pairwise acc: 0.5738; spearman: 0.2289
+=eval, test, maxlenPP
+Pairwise acc: 0.5978; spearman: 0.2787
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, fracfunc
+Pairwise acc: 0.5524; spearman: 0.1566
+=eval, test, fracfunc
+Pairwise acc: 0.5542; spearman: 0.1568
+====
+
+
+
+
+Evaluate on 4 en-cs\en-de\en-es\en-fr. Taking the average
+=eval, dev, avgwordspec
+Pairwise acc: 0.5152; spearman: 0.0458
+=eval, test, avgwordspec
+Pairwise acc: 0.5285; spearman: 0.0833
+====
+
+

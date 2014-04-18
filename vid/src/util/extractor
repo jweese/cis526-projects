@@ -6,16 +6,16 @@ from collections import namedtuple
 
 optparser = optparse.OptionParser()
 
-optparser.add_option("-tr", "--train", dest="train", default="../../data/train/", help="Data filename prefix (default=data)")
+optparser.add_option("--train", dest="train", default="../../data/train/", help="Data filename prefix (default=data)")
 optparser.add_option("-d", "--dev", dest="dev", default="../../data/dev/", help="Path to dev directory" )
-optparser.add_option("-c", "--corpora", dest="corpora", default="../../data/copora/", help="Path to corpora directory")
+optparser.add_option("-c", "--corpora", dest="corpora", default="../../data/corpora/", help="Path to corpora directory")
 optparser.add_option("-s", "--suffix", dest="suffix", default="_wikipedia_2010_100K-sentences.txt", help="Data filename suffix (default=_train)")
 optparser.add_option("-t", "--test", dest="test", default="../../data/test/", help="Path to test directory")
-optparser.add_option("-sl", "--solution", dest="solution", default="../../data/solution/")
+optparser.add_option("--solution", dest="solution", default="../../data/solution/")
 optparser.add_option("-n", "--trainmax", dest="trainmax", default=1000, type="int", help="Number of sentences to extract for training")
 optparser.add_option("-m", "--devmax", dest="devmax", default=3000, type="int", help="Number of sentences to extract for dev and test set")
-optparser.add_option("-ln", "--minlength", dest="minlength", default=20, type="int", help="Minimum string length for dev/test set")
-optparser.add_option("-lm", "--length", dest="length", default=50, type="int", help="Maximum string length for dev/test set")
+optparser.add_option("--minlength", dest="minlength", default=20, type="int", help="Minimum string length for dev/test set")
+optparser.add_option("--maxlength", dest="maxlength", default=50, type="int", help="Maximum string length for dev/test set")
 
 (opts, _) = optparser.parse_args()
 

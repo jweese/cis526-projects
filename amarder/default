@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+import argparse
+from collections import Counter
+
+def main():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('-s', '--test', dest='s', default='data/test.ru')
+    parser.add_argument('-t', '--train', dest='t', default='data/train.txt')
+    parser.add_argument('-o', '--translation-options', dest='translation-options', default=1, type=int)
+    args = parser.parse_args()
+    names = [l.strip().split('\t') for l in open(args.t)]
+    rchars = {r: Counter() for (_, rname) in names for r in rname}
+    for (ename, rname) in names:
+        for (i, r) in enumerate(rname):
+            rchars[r].update([ename[i] if i < len(ename) else '-'])
+    total_transliterations = {r: len(list(c.elements())) for (r, c) in rchars.items()}
+    transliterations = {r: c.most_common(2)[0][0] for (r, c) in rchars.items()}
+    russian_names = [r.strip() for r in open(args.s)]
+    for russian_name in russian_names:
+        english_name = []
+        for r in russian_name:
+            english_name += transliterations[r] if transliterations[r] != '-' else ''
+        print(''.join(english_name))
+
+if __name__ == '__main__':
+    main()

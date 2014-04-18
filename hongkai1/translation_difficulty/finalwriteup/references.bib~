@@ -1,0 +1,243 @@
+%NYT
+@article{nytcorpus,
+    author = {Sandhaus, Evan},
+    title = {The New York Times Annotated Corpus},
+    journal = {Linguistic Data Consortium, Philadelphia, PA},
+    year = {2008},
+    pages = {},
+}
+
+@inproceedings{Liang:2006:EDA:1220175.1220271,
+ author = {Liang, Percy and Bouchard-C\^{o}t{\'e}, Alexandre and Klein, Dan and Taskar, Ben},
+ title = {An End-to-end Discriminative Approach to Machine Translation},
+ booktitle = {Proceedings of the 21st International Conference on Computational Linguistics and the 44th Annual Meeting of the Association for Computational Linguistics},
+ series = {ACL-44},
+ year = {2006},
+ location = {Sydney, Australia},
+ pages = {761--768},
+ numpages = {8},
+ url = {http://dx.doi.org/10.3115/1220175.1220271},
+ doi = {10.3115/1220175.1220271},
+ acmid = {1220271},
+ publisher = {Association for Computational Linguistics},
+ address = {Stroudsburg, PA, USA},
+} 
+
+
+@INPROCEEDINGS{Callison-burch01aprogram,
+    author = {Chris Callison-burch and Raymond S. Flournoy},
+    title = {A Program for Automatically Selecting the Best Output from Multiple Machine Translation Engines},
+    booktitle = {In Proceedings of the Machine Translation Summit VIII},
+    year = {2001},
+    pages = {63--66}
+}
+
+@INPROCEEDINGS{Klein03fastexact,
+    author = {Dan Klein and Christopher D. Manning},
+    title = {Fast Exact Inference with a Factored Model for Natural Language Parsing},
+    booktitle = {In Advances in Neural Information Processing Systems 15 (NIPS},
+    year = {2003},
+    pages = {3--10},
+    publisher = {MIT Press}
+}
+
+@ARTICLE{Miller95wordnet:a,
+    author = {George A. Miller},
+    title = {WordNet: A Lexical Database for English},
+    journal = {COMMUNICATIONS OF THE ACM},
+    year = {1995},
+    volume = {38},
+    pages = {39--41}
+}
+
+@InProceedings{callisonburch-EtAl:2011:WMT,
+  author    = {Callison-Burch, Chris  and  Koehn, Philipp  and  Monz, Christof  and  Zaidan, Omar},
+  title     = {Findings of the 2011 Workshop on Statistical Machine Translation},
+  booktitle = {Proceedings of the Sixth Workshop on Statistical Machine Translation},
+  month     = {July},
+  year      = {2011},
+  address   = {Edinburgh, Scotland},
+  publisher = {Association for Computational Linguistics},
+  pages     = {22--64},
+  url       = {http://www.aclweb.org/anthology/W11-2103}
+}
+
+@InProceedings{callisonburch-EtAl:2012:WMT,
+  author    = {Callison-Burch, Chris  and  Koehn, Philipp  and  Monz, Christof  and  Post, Matt  and  Soricut, Radu  and  Specia, Lucia},
+  title     = {Findings of the 2012 Workshop on Statistical Machine Translation},
+  booktitle = {Proceedings of the Seventh Workshop on Statistical Machine Translation},
+  month     = {June},
+  year      = {2012},
+  address   = {Montr{\'e}al, Canada},
+  publisher = {Association for Computational Linguistics},
+  pages     = {10--51},
+  url       = {http://www.aclweb.org/anthology/W12-3102}
+}
+
+@InProceedings{bojar-EtAl:2013:WMT,
+  author    = {Bojar, Ond\v{r}ej  and  Buck, Christian  and  Callison-Burch, Chris  and  Federmann, Christian  and  Haddow, Barry  and  Koehn, Philipp  and  Monz, Christof  and  Post, Matt  and  Soricut, Radu  and  Specia, Lucia},
+  title     = {Findings of the 2013 {Workshop on Statistical Machine Translation}},
+  booktitle = {Proceedings of the Eighth Workshop on Statistical Machine Translation},
+  month     = {August},
+  year      = {2013},
+  address   = {Sofia, Bulgaria},
+  publisher = {Association for Computational Linguistics},
+  pages     = {1--44},
+  url       = {http://www.aclweb.org/anthology/W13-2201}
+}
+
+
+@InProceedings{birch-osborne-koehn:2008:EMNLP,
+  author    = {Birch, Alexandra  and  Osborne, Miles  and  Koehn, Philipp},
+  title     = {Predicting Success in Machine Translation},
+  booktitle = {Proceedings of the 2008 Conference on Empirical Methods in Natural Language Processing},
+  month     = {October},
+  year      = {2008},
+  address   = {Honolulu, Hawaii},
+  publisher = {Association for Computational Linguistics},
+  pages     = {745--754},
+  url       = {http://www.aclweb.org/anthology/D08-1078}
+}
+
+@InProceedings{sys462,
+  author    = {Koehn, Philipp and Birch, Alexandra  and  Steinberger, Ralf },
+  title     = {462 Machine Translation Systems for Europe},
+  year = {2009},
+  booktitle = {Proceedings of the MT Summit XII},  
+}
+
+@InProceedings{mishra-bhattacharyya-carl:2013:Short,
+  author    = {Mishra, Abhijit  and  Bhattacharyya, Pushpak  and  Carl, Michael},
+  title     = {Automatically Predicting Sentence Translation Difficulty},
+  booktitle = {Proceedings of the 51st Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+  month     = {August},
+  year      = {2013},
+  address   = {Sofia, Bulgaria},
+  publisher = {Association for Computational Linguistics},
+  pages     = {346--351},
+  url       = {http://www.aclweb.org/anthology/P13-2062}
+}
+
+@article{Albrecht:2008:RMT:1484962.1484979,
+ author = {Albrecht, Joshua S. and Hwa, Rebecca},
+ title = {Regression for Machine Translation Evaluation at the Sentence Level},
+ journal = {Machine Translation},
+ issue_date = {March     2008},
+ volume = {22},
+ number = {1-2},
+ month = mar,
+ year = {2008},
+ issn = {0922-6567},
+ pages = {1--27},
+ numpages = {27},
+ url = {http://dx.doi.org/10.1007/s10590-008-9046-1},
+ doi = {10.1007/s10590-008-9046-1},
+ acmid = {1484979},
+ publisher = {Kluwer Academic Publishers},
+ address = {Hingham, MA, USA},
+ keywords = {Evaluation metrics, Machine learning, Machine translation},
+}
+
+@InProceedings{zhao-ng:2007:EMNLP-CoNLL2007,
+  author    = {Zhao, Shanheng  and  Ng, Hwee Tou},
+  title     = {Identification and Resolution of {C}hinese Zero Pronouns: A Machine Learning Approach},
+  booktitle = {Proceedings of the 2007 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning (EMNLP-CoNLL)},
+  pages     = {541--550},
+  year      = {2007},
+  url       = {http://www.aclweb.org/anthology/D/D07/D07-1057}
+}
+
+@article{mihuailua2011zero,
+  title={Zero Pronominal Anaphora Resolution for the Romanian Language},
+  author={Mih{\u{a}}il{\u{a}}, Claudiu and Ilisei, Iustina and Inkpen, Diana},
+  journal={Research Journal on Computer Science and Computer Engineering with Applications” POLIBITS},
+  volume={42},
+  year={2011}
+}
+
+@InProceedings{minkov-toutanova-suzuki:2007:ACLMain,
+  author    = {Minkov, Einat  and  Toutanova, Kristina  and  Suzuki, Hisami},
+  title     = {Generating Complex Morphology for Machine Translation},
+  booktitle = {Proceedings of the 45th Annual Meeting of the Association of Computational Linguistics},
+  month     = {June},
+  year      = {2007},
+  address   = {Prague, Czech Republic},
+  publisher = {Association for Computational Linguistics},
+  pages     = {128--135},
+  url       = {http://www.aclweb.org/anthology/P07-1017}
+}
+
+@INPROCEEDINGS{Wang07chinesesyntactic,
+    author = {Chao Wang},
+    title = {Chinese Syntactic Reordering for Statistical Machine Translation},
+    booktitle = {In Proceedings of EMNLP},
+    year = {2007},
+    pages = {737--745}
+}
+
+@incollection{maja-compound,
+    year={2006},
+    isbn={978-3-540-37334-6},
+    booktitle={Advances in Natural Language Processing},
+    volume={4139},
+    series={Lecture Notes in Computer Science},
+    editor={Salakoski, Tapio and Ginter, Filip and Pyysalo, Sampo and Pahikkala, Tapio},
+    doi={10.1007/11816508_61},
+    title={Statistical Machine Translation of German Compound Words},
+    url={http://dx.doi.org/10.1007/11816508_61},
+    publisher={Springer Berlin Heidelberg},
+    author={Popović, Maja and Stein, Daniel and Ney, Hermann},
+    pages={616-624}
+}
+
+@article{sanjun-dissertation,
+  author    = {Sun, Sanjun},
+  title     = {Measuring difficulty in English-Chinese translation: Towards a general model of translation difficulty},
+  booktitle = {Electronic Thesis or Dissertation},
+  year      = {2012},
+  publisher = {Kent State University},
+  url       = {https://etd.ohiolink.edu/}
+}
+
+@InProceedings{nenkova-louis:2008:ACLMain,
+  author    = {Nenkova, Ani  and  Louis, Annie},
+  title     = {Can You Summarize This? Identifying Correlates of Input Difficulty for Multi-Document Summarization},
+  booktitle = {Proceedings of ACL-08: HLT},
+  month     = {June},
+  year      = {2008},
+  address   = {Columbus, Ohio},
+  publisher = {Association for Computational Linguistics},
+  pages     = {825--833},
+  url       = {http://www.aclweb.org/anthology/P/P08/P08-1094}
+}
+
+@article{Fan:2008:LLL:1390681.1442794,
+ author = {Fan, Rong-En and Chang, Kai-Wei and Hsieh, Cho-Jui and Wang, Xiang-Rui and Lin, Chih-Jen},
+ title = {LIBLINEAR: A Library for Large Linear Classification},
+ journal = {J. Mach. Learn. Res.},
+ issue_date = {6/1/2008},
+ volume = {9},
+ month = jun,
+ year = {2008},
+ issn = {1532-4435},
+ pages = {1871--1874},
+ numpages = {4},
+ url = {http://dl.acm.org/citation.cfm?id=1390681.1442794},
+ acmid = {1442794},
+ publisher = {JMLR.org},
+} 
+
+@inproceedings{Chae:2009:PFT:1609067.1609082,
+ author = {Chae, Jieun and Nenkova, Ani},
+ title = {Predicting the Fluency of Text with Shallow Structural Features: Case Studies of Machine Translation and Human-written Text},
+ booktitle = {Proceedings of the 12th Conference of the European Chapter of the Association for Computational Linguistics},
+ series = {EACL '09},
+ year = {2009},
+ location = {Athens, Greece},
+ pages = {139--147},
+ numpages = {9},
+ url = {http://dl.acm.org/citation.cfm?id=1609067.1609082},
+ acmid = {1609082},
+ publisher = {Association for Computational Linguistics},
+ address = {Stroudsburg, PA, USA},
+} 

@@ -1,0 +1,107 @@
+%!TEX encoding = UTF-8 Unicode 
+\documentclass[11pt]{article}
+%\usepackage{CJKutf8}
+\usepackage[english]{babel}
+\usepackage{acl2014}
+\usepackage{times}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+%\usepackage{algorithmic}
+\usepackage{enumerate}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{chngpage}
+
+% New commands serve as shorthand for frequently used command combinations.
+\newcommand{\ind}[1]{\mathbf{1}\left(#1\right)}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\D}{\mathbf{D}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\bP}{\mathbf{P}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\mH}{\mathcal{H}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+%%AL-COMMENTS insert title and name here
+\title{Predicting Translation Difficulty on Sentence-level for MT Systems}
+
+\author{
+	Junyi Jessy Li and Kai Hong\\
+   University of Pennsylvania \\
+   Philadelphia, PA 19104 \\
+  	{\tt \{ljunyi, hongkai1\}@seas.upenn.edu}}
+
+\begin{document}
+\maketitle
+
+\section{Problem Statement and Related Work}
+Machine Translation (MT), despite its many recent advances, still remains a hard problem. 
+Translations produced by automatic systems suffer from problems such as information reordering, misalignments, mistranslations, etc. 
+In this study, we propose to explore the question of how difficult a sentence is to translate automatically. 
+
+We propose to study this problem from two viewpoints. The first viewpoint relies on language dependent factors.
+Intuitively some properties unique to certain languages poses problems for automatic systems.
+For example, Chinese and Romanian are well known for their zero anaphora \cite{zhao-ng:2007:EMNLP-CoNLL2007,mihuailua2011zero}; 
+information expressed as individual words in one language may be morphologically expressed in another \cite{minkov-toutanova-suzuki:2007:ACLMain}; 
+reorderings often must be explicitly handled \cite{Wang07chinesesyntactic}, and a single word in one language may be decomposed into several in another \cite{maja-compound}. 
+
+%On the other hand, some other properties can be found in hard-to-translate sentences, regardless of langauge. 
+On the other hand, some factors might make the sentences difficult to translate, independent of language.
+Length, for instance, is a natural indicator for how difficult for a human to translate a sentence \cite{mishra-bhattacharyya-carl:2013:Short}. 
+We ask the question whether it is also the case for automatic systems. 
+Other indicators we conjecture include the use of subordinations, structure, amount of re-ordering and complexities of verb phrases and noun phrases, etc.
+
+A handful of studies have looked into predicting the difficulty of translation on language level, rather than on sentence level. 
+There, most of the work investiage the general properties which make those language-pairs difficult to translate.
+Birch et al. ~\shortcite{birch-osborne-koehn:2008:EMNLP} show that the amount of reordering, morphological complexity and historical relatedness are important factors for predicting the performance of MT systems.
+A further study looked into $462$ language pairs (in total $22$ languages), where the concept of translation model entropy is introduced to capture the amount of uncertainty involved in choosing candidate translation phrases \cite{sys462}.
+
+Through this study we hope to characterize difficulties that may lie ahead for MT systems, and we aim at quantitatively estimate such difficulties by developing a set of features for a machine learning framework.
+
+\section{Datasets}
+We propose to use the test set from NAACL WSMT 2006 \cite{WMT:2006} and ACL WSMT 2007 \cite{WMT:2007} for our study. 
+The dataset of these two years include language pairs of English-German, English-French, English-Spanish and English-Czech (for WSMT 2007 only) in both directions. 
+We choose these two years for the reason that they provide manual evaluation of fluency and adequency per sentence, along with the \emph{BLEU} score.
+Moreover, a number of language families have been covered, including Germanic (English and German), Romance (French and Spanish) and Slavic (Czech). 
+For year 2007, data of systems translating the same content from different languages are also available, which would provide us with better estimate of translation difficulty depending on the language.
+As we want to form a supervised system of predicting translation difficulty, we need to split our dataset into training, development and testing set. 
+
+If time permits, we would like to look into the problem for more languages. 
+The WSMT workshop of later years include Hungarian, Haitian Creole and Russian, which makes it a good choice of performing further research. 
+
+\section{Approach and Evaluation}
+\subsection{Objective Function and Evaluation}
+The plan of this study is to investigate and collect a set of language dependent and independent factors of a sentence that are indicative of translation difficulty. 
+One challenge of such an approach is the lack of a reliable sentence-level evaluation metric for translation hypothesis. 
+%For analysis, a comparison can be carried out between scores of sentences that contains one or more factors vs those that do not. 
+%One challenge of 
+We conjecture that with more systems, the average of automatic scores or human evaluations would provide a partial but feasible solution to this problem.
+Here, we regard manual evaluations as our main metric, \emph{BLEU} scores are used as auxilliary metric. 
+%Thus, we look into the manual evaluation of fluency and adequency as the quality score of sentence, which takes the value between $1$ and $5$. 
+The oracle difficulty measure for a sentence is thus the average of fluency and adequency of all MT systems, where higher score indicates easier sentence-pairs.
+For the cases where manual evaluation is not available, we use the \emph{BLEU} score as oracle, similar to Birch et al. ~\shortcite{birch-osborne-koehn:2008:EMNLP} and Koehn et al ~\shortcite{sys462} where 
+they evaluate langauge-level difficulty; as well as \cite{nenkova-louis:2008:ACLMain} where they average over the \emph{ROUGE} scores to predict input difficulty for automatic summarization. 
+
+To demonstrate the effectiveness of our proposed features, we will compute the Spearman Correlation between the features and the difficulty score on training set.
+We can also compute the goodness of fit for simple linear regression models using one feature. 
+Then we propose two approaches of performing evaluations. 
+Firstly, as the difficulty takes a value between $1$ and $5$, we can regard our problem as a regression problem, which could be evaluated through Mean-square Error.
+Secondly, we can also compute the pariwise accurracy, which calculates the accurracy of correctly predicting which sentence-pair is more difficult than the other. 
+
+\subsection{Proposed Default and Baseline}
+Since sentence length is one of the most crucial indicators of translation difficulty for human \cite{mishra-bhattacharyya-carl:2013:Short}, we regard it as our \emph{Default System}. 
+As for the \emph{Baseline System}, we propose to compute factors such as syntax complexity, subordinations and the number of noun phrases or verb phrases. 
+
+\bibliographystyle{acl}
+\bibliography{references}
+\end{document}

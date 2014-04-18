@@ -3,6 +3,8 @@
 formated='formatted'
 input=$1
 
+mkdir $formated
+
 python evaluate/code/format_data.py $formated/ -d $input
 
 PATH_TO_M2=evaluate/m2scorer/scripts

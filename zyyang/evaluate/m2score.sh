@@ -1,12 +1,17 @@
 #!/bin/bash
 
-PATH_TO_M2=/Users/kunpeng/Dropbox/CIS526/Project/release2.3.1/m2scorer/scripts
+formated='formatted'
+input=$1
 
-dir=$1
+python code/format_data.py $formated/ -d $input
 
-reffile=$dir/gold.m2
-predfile=$dir/system.m2
+PATH_TO_M2=m2scorer/scripts
 
-python $PATH_TO_M2/m2scorer.py -v $predfile $reffile > $dir/prediction.log
+#dir=$1
 
-tail -9 $dir/prediction.log
+reffile=$formated/gold.m2
+predfile=$formated/system.m2
+
+python $PATH_TO_M2/m2scorer.py -v $predfile $reffile > $formated/prediction.log
+
+tail -9 $formated/prediction.log

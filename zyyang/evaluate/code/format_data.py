@@ -4,11 +4,19 @@ import sys
 import csv
 from nltk.tokenize import wordpunct_tokenize
 from dataset import *
+import optparse
 
 gold_dir = 'gold-data/gold'
 datafile = 'mturk-data/esl.tsv'
 
 dir = sys.argv[1]
+
+optparser = optparse.OptionParser()
+optparser.add_option("-d", "--data", dest="results", default="result.txt", help="Data filename prefix (default=data)")
+(opts, args) = optparser.parse_args()
+data = "%s" % (opts.results)
+
+
 
 
 #S The cat sat at mat .
@@ -23,7 +31,7 @@ systm = open('%s/system.m2'%dir, 'w')
 
 errs = 0
 
-result = [list(line.strip().split("\t")) for line in open("result_random_30.txt").readlines()]
+result = [list(line.strip().split("\t")) for line in open(data).readlines()]
 lines = [int(ele[0]) for ele in result]
 listlength = len(lines)
 selectedLines30 = lines[:int(listlength * 0.3)]

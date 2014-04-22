@@ -11,9 +11,9 @@ optparser.add_option("-i", "--input", dest="input", default="../data/dev/dev_set
 (opts, _) = optparser.parse_args()
 
 lang = ['eng', 'fra', 'deu', 'ita', 'spa']
-suffix = optparser.suffix
-train_dir = optparser.train
-input_file = optparser.input
+suffix = opts.suffix
+train_dir = opts.train
+input_file = opts.input
 
 # Train data
 dicts = []
@@ -27,7 +27,7 @@ for i in xrange(len(lang)):
       temp[word] += 1
     total += len(words)
   for key in temp:
-    temp[key] /= (float) total
+    temp[key] /= float(total)
   dicts.append(temp)
 
 # Classify language

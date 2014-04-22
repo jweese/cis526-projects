@@ -1,0 +1,101 @@
+en-de.11
+pairwise accuracy: 0.5433
+Spearman corr. 2tail: 0.1270; pval: 0.0000
+
+========
+en-es.11
+pairwise accuracy: 0.5576
+Spearman corr. 2tail: 0.1595; pval: 0.0000
+
+========
+en-cs.11
+pairwise accuracy: 0.5294
+Spearman corr. 2tail: 0.0923; pval: 0.0000
+
+========
+en-fr.11
+pairwise accuracy: 0.5497
+Spearman corr. 2tail: 0.1338; pval: 0.0000
+
+========
+en-de.12
+pairwise accuracy: 0.5405
+Spearman corr. 2tail: 0.1175; pval: 0.0000
+
+========
+en-es.12
+pairwise accuracy: 0.5392
+Spearman corr. 2tail: 0.1036; pval: 0.0000
+
+========
+en-cs.12
+pairwise accuracy: 0.5362
+Spearman corr. 2tail: 0.1072; pval: 0.0000
+
+========
+en-fr.12
+pairwise accuracy: 0.5355
+Spearman corr. 2tail: 0.0875; pval: 0.0000
+
+========
+en-de.13
+pairwise accuracy: 0.5180
+Spearman corr. 2tail: 0.0501; pval: 0.0061
+
+========
+en-es.13
+pairwise accuracy: 0.5285
+Spearman corr. 2tail: 0.0789; pval: 0.0000
+
+========
+en-cs.13
+pairwise accuracy: 0.5311
+Spearman corr. 2tail: 0.0895; pval: 0.0000
+
+========
+en-fr.13
+pairwise accuracy: 0.5307
+Spearman corr. 2tail: 0.0962; pval: 0.0000
+
+========
+
+('en-cs', 'dev')
+pairwise accuracy: 0.5346
+Spearman corr. 2tail: 0.1087; pval: 0.0000
+
+========
+('en-de', 'dev')
+pairwise accuracy: 0.5442
+Spearman corr. 2tail: 0.1370; pval: 0.0000
+
+========
+('en-es', 'dev')
+pairwise accuracy: 0.5462
+Spearman corr. 2tail: 0.1488; pval: 0.0000
+
+========
+('en-fr', 'dev')
+pairwise accuracy: 0.5238
+Spearman corr. 2tail: 0.0781; pval: 0.0024
+
+========
+('en-cs', 'test')
+pairwise accuracy: 0.5254
+Spearman corr. 2tail: 0.0789; pval: 0.0022
+
+========
+('en-de', 'test')
+pairwise accuracy: 0.5374
+Spearman corr. 2tail: 0.1047; pval: 0.0000
+
+========
+('en-es', 'test')
+pairwise accuracy: 0.5376
+Spearman corr. 2tail: 0.1061; pval: 0.0000
+
+========
+('en-fr', 'test')
+pairwise accuracy: 0.5495
+Spearman corr. 2tail: 0.1341; pval: 0.0000
+
+========

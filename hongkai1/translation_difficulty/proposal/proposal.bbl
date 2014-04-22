@@ -1,0 +1,91 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Birch \bgroup et al.\egroup
+  }2008]{birch-osborne-koehn:2008:EMNLP}
+Alexandra Birch, Miles Osborne, and Philipp Koehn.
+\newblock 2008.
+\newblock Predicting success in machine translation.
+\newblock In {\em Proceedings of the 2008 Conference on Empirical Methods in
+  Natural Language Processing}, pages 745--754, Honolulu, Hawaii, October.
+  Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Callison-Burch \bgroup et al.\egroup
+  }2007]{WMT:2007}
+Chris Callison-Burch, Philipp Koehn, Cameron~Shaw Fordyce, and Christof Monz,
+  editors.
+\newblock 2007.
+\newblock {\em Proceedings of the Second Workshop on Statistical Machine
+  Translation}.
+\newblock Association for Computational Linguistics, Prague, Czech Republic,
+  June.
+
+\bibitem[\protect\citename{Koehn and Monz}2006]{WMT:2006}
+Philipp Koehn and Christof Monz, editors.
+\newblock 2006.
+\newblock {\em Proceedings on the Workshop on Statistical Machine Translation}.
+\newblock Association for Computational Linguistics, New York City, June.
+
+\bibitem[\protect\citename{Koehn \bgroup et al.\egroup }2009]{sys462}
+Philipp Koehn, Alexandra Birch, and Ralf Steinberger.
+\newblock 2009.
+\newblock 462 machine translation systems for europe.
+
+\bibitem[\protect\citename{Mih{\u{a}}il{\u{a}} \bgroup et al.\egroup
+  }2011]{mihuailua2011zero}
+Claudiu Mih{\u{a}}il{\u{a}}, Iustina Ilisei, and Diana Inkpen.
+\newblock 2011.
+\newblock Zero pronominal anaphora resolution for the romanian language.
+\newblock {\em Research Journal on Computer Science and Computer Engineering
+  with Applications” POLIBITS}, 42.
+
+\bibitem[\protect\citename{Minkov \bgroup et al.\egroup
+  }2007]{minkov-toutanova-suzuki:2007:ACLMain}
+Einat Minkov, Kristina Toutanova, and Hisami Suzuki.
+\newblock 2007.
+\newblock Generating complex morphology for machine translation.
+\newblock In {\em Proceedings of the 45th Annual Meeting of the Association of
+  Computational Linguistics}, pages 128--135, Prague, Czech Republic, June.
+  Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Mishra \bgroup et al.\egroup
+  }2013]{mishra-bhattacharyya-carl:2013:Short}
+Abhijit Mishra, Pushpak Bhattacharyya, and Michael Carl.
+\newblock 2013.
+\newblock Automatically predicting sentence translation difficulty.
+\newblock In {\em Proceedings of the 51st Annual Meeting of the Association for
+  Computational Linguistics (Volume 2: Short Papers)}, pages 346--351, Sofia,
+  Bulgaria, August. Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Nenkova and Louis}2008]{nenkova-louis:2008:ACLMain}
+Ani Nenkova and Annie Louis.
+\newblock 2008.
+\newblock Can you summarize this? identifying correlates of input difficulty
+  for multi-document summarization.
+\newblock In {\em Proceedings of ACL-08: HLT}, pages 825--833, Columbus, Ohio,
+  June. Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Popović \bgroup et al.\egroup }2006]{maja-compound}
+Maja Popović, Daniel Stein, and Hermann Ney.
+\newblock 2006.
+\newblock Statistical machine translation of german compound words.
+\newblock In Tapio Salakoski, Filip Ginter, Sampo Pyysalo, and Tapio Pahikkala,
+  editors, {\em Advances in Natural Language Processing}, volume 4139 of {\em
+  Lecture Notes in Computer Science}, pages 616--624. Springer Berlin
+  Heidelberg.
+
+\bibitem[\protect\citename{Wang}2007]{Wang07chinesesyntactic}
+Chao Wang.
+\newblock 2007.
+\newblock Chinese syntactic reordering for statistical machine translation.
+\newblock In {\em In Proceedings of EMNLP}, pages 737--745.
+
+\bibitem[\protect\citename{Zhao and Ng}2007]{zhao-ng:2007:EMNLP-CoNLL2007}
+Shanheng Zhao and Hwee~Tou Ng.
+\newblock 2007.
+\newblock Identification and resolution of {C}hinese zero pronouns: A machine
+  learning approach.
+\newblock In {\em Proceedings of the 2007 Joint Conference on Empirical Methods
+  in Natural Language Processing and Computational Natural Language Learning
+  (EMNLP-CoNLL)}, pages 541--550.
+
+\end{thebibliography}

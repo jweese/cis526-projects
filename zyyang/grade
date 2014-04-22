@@ -1,0 +1,2 @@
+cd evaluate
+sh m2score.sh ../$1

@@ -1,0 +1,118 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citename{Birch \bgroup et al.\egroup
+  }2008]{birch-osborne-koehn:2008:EMNLP}
+Alexandra Birch, Miles Osborne, and Philipp Koehn.
+\newblock 2008.
+\newblock Predicting success in machine translation.
+\newblock In {\em Proceedings of the 2008 Conference on Empirical Methods in
+  Natural Language Processing}, pages 745--754, Honolulu, Hawaii, October.
+  Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Bojar \bgroup et al.\egroup
+  }2013]{bojar-EtAl:2013:WMT}
+Ond\v{r}ej Bojar, Christian Buck, Chris Callison-Burch, Christian Federmann,
+  Barry Haddow, Philipp Koehn, Christof Monz, Matt Post, Radu Soricut, and
+  Lucia Specia.
+\newblock 2013.
+\newblock Findings of the 2013 {Workshop on Statistical Machine Translation}.
+\newblock In {\em Proceedings of the Eighth Workshop on Statistical Machine
+  Translation}, pages 1--44, Sofia, Bulgaria, August. Association for
+  Computational Linguistics.
+
+\bibitem[\protect\citename{Callison-Burch \bgroup et al.\egroup
+  }2011]{callisonburch-EtAl:2011:WMT}
+Chris Callison-Burch, Philipp Koehn, Christof Monz, and Omar Zaidan.
+\newblock 2011.
+\newblock Findings of the 2011 workshop on statistical machine translation.
+\newblock In {\em Proceedings of the Sixth Workshop on Statistical Machine
+  Translation}, pages 22--64, Edinburgh, Scotland, July. Association for
+  Computational Linguistics.
+
+\bibitem[\protect\citename{Callison-Burch \bgroup et al.\egroup
+  }2012]{callisonburch-EtAl:2012:WMT}
+Chris Callison-Burch, Philipp Koehn, Christof Monz, Matt Post, Radu Soricut,
+  and Lucia Specia.
+\newblock 2012.
+\newblock Findings of the 2012 workshop on statistical machine translation.
+\newblock In {\em Proceedings of the Seventh Workshop on Statistical Machine
+  Translation}, pages 10--51, Montr{\'e}al, Canada, June. Association for
+  Computational Linguistics.
+
+\bibitem[\protect\citename{Chae and
+  Nenkova}2009]{Chae:2009:PFT:1609067.1609082}
+Jieun Chae and Ani Nenkova.
+\newblock 2009.
+\newblock Predicting the fluency of text with shallow structural features: Case
+  studies of machine translation and human-written text.
+\newblock In {\em Proceedings of the 12th Conference of the European Chapter of
+  the Association for Computational Linguistics}, EACL '09, pages 139--147,
+  Stroudsburg, PA, USA. Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Fan \bgroup et al.\egroup
+  }2008]{Fan:2008:LLL:1390681.1442794}
+Rong-En Fan, Kai-Wei Chang, Cho-Jui Hsieh, Xiang-Rui Wang, and Chih-Jen Lin.
+\newblock 2008.
+\newblock Liblinear: A library for large linear classification.
+\newblock {\em J. Mach. Learn. Res.}, 9:1871--1874, June.
+
+\bibitem[\protect\citename{Klein and Manning}2003]{Klein03fastexact}
+Dan Klein and Christopher~D. Manning.
+\newblock 2003.
+\newblock Fast exact inference with a factored model for natural language
+  parsing.
+\newblock In {\em In Advances in Neural Information Processing Systems 15
+  (NIPS}, pages 3--10. MIT Press.
+
+\bibitem[\protect\citename{Koehn \bgroup et al.\egroup }2009]{sys462}
+Philipp Koehn, Alexandra Birch, and Ralf Steinberger.
+\newblock 2009.
+\newblock 462 machine translation systems for europe.
+\newblock In {\em Proceedings of the MT Summit XII}.
+
+\bibitem[\protect\citename{Liang \bgroup et al.\egroup
+  }2006]{Liang:2006:EDA:1220175.1220271}
+Percy Liang, Alexandre Bouchard-C\^{o}t{\'e}, Dan Klein, and Ben Taskar.
+\newblock 2006.
+\newblock An end-to-end discriminative approach to machine translation.
+\newblock In {\em Proceedings of the 21st International Conference on
+  Computational Linguistics and the 44th Annual Meeting of the Association for
+  Computational Linguistics}, ACL-44, pages 761--768, Stroudsburg, PA, USA.
+  Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Miller}1995]{Miller95wordnet:a}
+George~A. Miller.
+\newblock 1995.
+\newblock Wordnet: A lexical database for english.
+\newblock {\em COMMUNICATIONS OF THE ACM}, 38:39--41.
+
+\bibitem[\protect\citename{Mishra \bgroup et al.\egroup
+  }2013]{mishra-bhattacharyya-carl:2013:Short}
+Abhijit Mishra, Pushpak Bhattacharyya, and Michael Carl.
+\newblock 2013.
+\newblock Automatically predicting sentence translation difficulty.
+\newblock In {\em Proceedings of the 51st Annual Meeting of the Association for
+  Computational Linguistics (Volume 2: Short Papers)}, pages 346--351, Sofia,
+  Bulgaria, August. Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Nenkova and Louis}2008]{nenkova-louis:2008:ACLMain}
+Ani Nenkova and Annie Louis.
+\newblock 2008.
+\newblock Can you summarize this? identifying correlates of input difficulty
+  for multi-document summarization.
+\newblock In {\em Proceedings of ACL-08: HLT}, pages 825--833, Columbus, Ohio,
+  June. Association for Computational Linguistics.
+
+\bibitem[\protect\citename{Sandhaus}2008]{nytcorpus}
+Evan Sandhaus.
+\newblock 2008.
+\newblock The new york times annotated corpus.
+\newblock {\em Linguistic Data Consortium, Philadelphia, PA}.
+
+\bibitem[\protect\citename{Stolcke}2002]{SRILM}
+Andreas Stolcke.
+\newblock 2002.
+\newblock {SRILM} -- an extensible language modeling toolkit.
+\newblock In {\em Proceedings of ICSLP}, volume~2, pages 901--904.
+
+\end{thebibliography}

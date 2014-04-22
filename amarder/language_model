@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+import argparse
+import sys
+from collections import Counter
+from math import log
+
+def main():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('-n', '--ngrams', dest='n', type=int, default=10)
+    parser.add_argument('-t', '--train', dest='t', default='data/train.txt')
+    args = parser.parse_args()
+    train_names = [l.strip().split('\t') for l in open(args.t)]
+    (enames, _) = zip(*train_names)
+    enames = ['{' + name + '}' for name in enames]
+    echars = set([e for ename in enames for e in ename])
+    ngrams = []
+    for n in range(1, args.n + 1):
+        for name in enames:
+            for i in range(len(name)):
+                if i + n <= len(name):
+                    ngrams.append(name[i:i+n])
+    # print(any([l == '{' or l == '}' for name in ngrams for l in name]))
+    count = Counter(ngrams)
+    distinct_ngrams = set(ngrams)
+    p = sorted([(ngram, log(float(count[ngram]) / sum([count[ngram[:-1] + l] for l in echars if ngram[:-1] + l in count]))) for ngram in distinct_ngrams], key=lambda x: (len(x[0]), x[0]))
+    print()
+    print('\\data\\')
+    for n in range(1, args.n + 1):
+        print('ngram %d=%d' % (n, len([ngram for ngram in distinct_ngrams if len(ngram) == n])))
+    for n in range(1, args.n + 1):
+        print()
+        print('\\%d-grams:' % (n))
+        print('\n'.join(['%f\t%s' % (prob, ngram) for (ngram, prob) in p]))
+    print('\n\\end\\')
+
+if __name__ == '__main__':
+    main()
